@@ -28,14 +28,14 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-version = "1.6.4"
+version = config.gendustry.version
 group = "net.bdew"
 archivesBaseName = "gendustry"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     replace("BDLIB_VER", config.bdlib.version)
-    replace("GENDUSTRY_VER", "1.6.4")
+    replace("GENDUSTRY_VER", config.gendustry.version)
     replace("GENDUSTRY_APIVER", "2.3.0")
 }
 
