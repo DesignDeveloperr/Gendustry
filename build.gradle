@@ -1,21 +1,21 @@
 buildscript {
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
     repositories {
         mavenCentral()
-        mavenLocal()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url = "https://jitpack.io"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'com.github.CDAGaming:ForgeGradle:1c670759c5'
+        classpath 'com.github.CDAGaming:CurseGradle:184e4322fd'
     }
 }
 
@@ -28,27 +28,15 @@ file "build.properties" withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-if (project.hasProperty('forgeOverride')) {
-    config.forge.version = forgeOverride
-}
-
-if (project.hasProperty('buildnum')) {
-    ext.simpleVersion = "${config.gendustry.version}.${project.buildnum}"
-} else {
-    ext.simpleVersion = "${config.gendustry.version}-DEV"
-}
-
-version = simpleVersion + '-mc' + config.minecraft.version
-ext.myApiVersion = config.gendustry.api.version
-
+version = "1.6.4"
 group = "net.bdew"
 archivesBaseName = "gendustry"
 
 minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     replace("BDLIB_VER", config.bdlib.version)
-    replace("GENDUSTRY_VER", simpleVersion.toString())
-    replace("GENDUSTRY_APIVER", myApiVersion)
+    replace("GENDUSTRY_VER", "1.6.4")
+    replace("GENDUSTRY_APIVER", "2.3.0")
 }
 
 repositories {
@@ -71,10 +59,6 @@ repositories {
         url "http://mobiusstrip.eu/maven"
     }
     ivy {
-        name "CoFHLib"
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision](-[classifier])(.[ext])"
-    }
-    ivy {
         name "BuildCraft"
         artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
     }
@@ -87,19 +71,12 @@ dependencies {
     compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.ccc.version}:dev"
     compile "com.mod-buildcraft:buildcraft:${config.buildcraft.version}:dev"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:api"
-    compile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:api"
 
     compile module("mcp.mobius.waila:Waila:${config.waila.version}_${config.minecraft.version}") {
         transitive = false // WAILA is depending on an invalid combination of CCC/NEI that doesn't run...
     }
-
-    compile ":CoFHLib:${config.cofhlib.version}:dev@jar"
-
     compile "net.bdew.thirdparty:mekanism:${config.mekanism.version}-mc${config.minecraft.version}:api"
 }
-
-
-import org.apache.tools.ant.filters.ReplaceTokens
 
 sourceSets {
     main {
@@ -109,9 +86,10 @@ sourceSets {
         resources {
             srcDir 'resources'
         }
-        output.resourcesDir = output.classesDir // Hack for IDEA
     }
 }
+
+import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
     inputs.property "tokens", minecraft.replacements
@@ -129,7 +107,7 @@ task apiJar(type: Jar, dependsOn: 'classes') {
     from(sourceSets.main.output) {
         include 'net/bdew/gendustry/api/**'
     }
-    
+
     from(file('api-changelog.md'))
 
     duplicatesStrategy "exclude"
@@ -166,43 +144,4 @@ artifacts {
     archives sourceJar
     archives deobfJar
     archives apiJar
-}
-
-apply plugin: 'maven-publish'
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifact deobfJar
-            artifact sourceJar
-            artifact apiJar
-        }
-    }
-    repositories {
-        maven {
-            url "file://var/www/maven"
-        }
-    }
-}
-
-apply plugin: 'curseforge'
-
-curse {
-    projectId = config.curseforge.id
-    apiKey = project.hasProperty("curseForgeApiKey") ? project.curseForgeApiKey : ""
-    releaseType = 'alpha'
-
-    artifact = jar
-    changelog = project.hasProperty("changelog") ? project.changelog : "No changelog available"
-
-    additionalArtifact deobfJar
-    additionalArtifact sourceJar
-    additionalArtifact apiJar
-
-    relatedProject 'bdlib': 'requiredLibrary'
-    relatedProject 'forestry': 'requiredLibrary'
-    relatedProject 'cofhcore': 'optionalLibrary'
-    relatedProject 'buildcraft': 'optionalLibrary'
-    relatedProject 'notenoughitems': 'optionalLibrary'
-    relatedProject 'waila': 'optionalLibrary'
 }

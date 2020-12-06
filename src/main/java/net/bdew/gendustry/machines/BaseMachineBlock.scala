@@ -16,6 +16,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.{MapColor, Material}
 import net.minecraft.client.renderer.texture.IIconRegister
 import net.minecraft.util.IIcon
+import net.minecraft.world.{Explosion, World}
 
 object MachineMaterial extends Material(MapColor.ironColor)
 
