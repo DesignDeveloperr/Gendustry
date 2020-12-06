@@ -17,21 +17,21 @@ import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
 
 case class CustomFlowerProvider(flowerType: String, name: String) extends IFlowerProvider {
-  def getFlowerType = flowerType
+    def getFlowerType = flowerType
 
-  def isAcceptedPollinatable(world: World, pollinatable: IPollinatable) = {
-    val plantTypes = pollinatable.getPlantType
-    plantTypes.size > 1 || !plantTypes.contains(EnumPlantType.Nether)
-  }
+    def isAcceptedPollinatable(world: World, pollinatable: IPollinatable) = {
+        val plantTypes = pollinatable.getPlantType
+        plantTypes.size > 1 || !plantTypes.contains(EnumPlantType.Nether)
+    }
 
-  def growFlower(world: World, individual: IIndividual, x: Int, y: Int, z: Int) =
-    FlowerManager.flowerRegistry.growFlower(flowerType, world, individual, x, y, z)
+    def growFlower(world: World, individual: IIndividual, x: Int, y: Int, z: Int) =
+        FlowerManager.flowerRegistry.growFlower(flowerType, world, individual, x, y, z)
 
-  def getDescription: String =
-    Misc.toLocal("gendustry.allele.flowers." + name)
+    def getDescription: String =
+        Misc.toLocal("gendustry.allele.flowers." + name)
 
-  def affectProducts(world: World, individual: IIndividual, x: Int, y: Int, z: Int, products: Array[ItemStack]): Array[ItemStack] =
-    products
+    def affectProducts(world: World, individual: IIndividual, x: Int, y: Int, z: Int, products: Array[ItemStack]): Array[ItemStack] =
+        products
 
-  def getFlowers = FlowerManager.flowerRegistry.getAcceptableFlowers(flowerType)
+    def getFlowers = FlowerManager.flowerRegistry.getAcceptableFlowers(flowerType)
 }

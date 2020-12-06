@@ -20,72 +20,74 @@ import net.minecraft.world.biome.BiomeGenBase
 
 class BeeMutation(parent1: IAlleleBeeSpecies, parent2: IAlleleBeeSpecies, result: IAlleleBeeSpecies, chance: Float) extends IBeeMutation {
 
-  var reqTemperature = Option[EnumTemperature](null)
-  var reqHumidity = Option[EnumHumidity](null)
-  var reqBlock = Option[Block](null)
-  var reqBlockMeta: Option[Int] = None
-  var reqBiome = Option[BiomeGenBase](null)
+    var reqTemperature = Option[EnumTemperature](null)
+    var reqHumidity = Option[EnumHumidity](null)
+    var reqBlock = Option[Block](null)
+    var reqBlockMeta: Option[Int] = None
+    var reqBiome = Option[BiomeGenBase](null)
 
-  def reqBiomeId = reqBiome map (_.biomeID)
+    def reqBiomeId = reqBiome map (_.biomeID)
 
-  // === IBeeMutation ===
+    // === IBeeMutation ===
 
-  def getBlockUnderHousing(h: IBeeHousing) = {
-    val c = h.getCoordinates
-    if (c.posY > 0)
-      h.getWorld.getBlock(c.posX, c.posY - 1, c.posZ)
-    else null
-  }
-
-  def getBlockMetaUnderHousing(h: IBeeHousing) = {
-    val c = h.getCoordinates
-    if (c.posY > 0)
-      h.getWorld.getBlockMetadata(c.posX, c.posY - 1, c.posZ)
-    else -1
-  }
-
-  def testReq[T](req: Option[T], v: T) = req.isEmpty || req.get == v
-
-  override def getChance(housing: IBeeHousing, allele0: IAlleleBeeSpecies, allele1: IAlleleBeeSpecies, genome0: IBeeGenome, genome1: IBeeGenome) =
-    if (!((allele0 == parent1 && allele1 == parent2) || (allele0 == parent2 && allele1 == parent1))) 0
-    else if (!testReq(reqTemperature, housing.getTemperature)) 0
-    else if (!testReq(reqHumidity, housing.getHumidity)) 0
-    else if (!testReq(reqBiomeId, housing.getBiome.biomeID)) 0
-    else if (!testReq(reqBlock, getBlockUnderHousing(housing))) 0
-    else if (!testReq(reqBlockMeta, getBlockMetaUnderHousing(housing))) 0
-    else {
-      val bkm = getRoot.getBeekeepingMode(housing.getWorld)
-      var processedChance = chance
-      processedChance *= BeeModifiers.from(housing).getMutationModifier(genome0, genome1, processedChance)
-      processedChance *= bkm.getBeeModifier.getMutationModifier(genome0, genome1, processedChance)
-      processedChance
+    def getBlockUnderHousing(h: IBeeHousing) = {
+        val c = h.getCoordinates
+        if (c.posY > 0)
+            h.getWorld.getBlock(c.posX, c.posY - 1, c.posZ)
+        else null
     }
 
-  override val getRoot = AlleleManager.alleleRegistry.getSpeciesRoot("rootBees").asInstanceOf[IBeeRoot]
+    def getBlockMetaUnderHousing(h: IBeeHousing) = {
+        val c = h.getCoordinates
+        if (c.posY > 0)
+            h.getWorld.getBlockMetadata(c.posX, c.posY - 1, c.posZ)
+        else -1
+    }
 
-  // === IMutation ===
+    def testReq[T](req: Option[T], v: T) = req.isEmpty || req.get == v
 
-  var isSecret = false
+    override def getChance(housing: IBeeHousing, allele0: IAlleleBeeSpecies, allele1: IAlleleBeeSpecies, genome0: IBeeGenome, genome1: IBeeGenome) =
+        if (!((allele0 == parent1 && allele1 == parent2) || (allele0 == parent2 && allele1 == parent1))) 0
+        else if (!testReq(reqTemperature, housing.getTemperature)) 0
+        else if (!testReq(reqHumidity, housing.getHumidity)) 0
+        else if (!testReq(reqBiomeId, housing.getBiome.biomeID)) 0
+        else if (!testReq(reqBlock, getBlockUnderHousing(housing))) 0
+        else if (!testReq(reqBlockMeta, getBlockMetaUnderHousing(housing))) 0
+        else {
+            val bkm = getRoot.getBeekeepingMode(housing.getWorld)
+            var processedChance = chance
+            processedChance *= BeeModifiers.from(housing).getMutationModifier(genome0, genome1, processedChance)
+            processedChance *= bkm.getBeeModifier.getMutationModifier(genome0, genome1, processedChance)
+            processedChance
+        }
 
-  override def getPartner(allele: IAllele) =
-    if (allele == parent1) parent2
-    else if (allele == parent2) parent1
-    else null
+    override val getRoot = AlleleManager.alleleRegistry.getSpeciesRoot("rootBees").asInstanceOf[IBeeRoot]
 
-  override def isPartner(allele: IAllele) =
-    allele == parent1 || allele == parent2
+    // === IMutation ===
 
-  override def getSpecialConditions = {
-    import scala.collection.JavaConversions._
-    reqTemperature.map(x => Misc.toLocalF("gendustry.req.temperature", x)) ++
-      reqHumidity.map(x => Misc.toLocalF("gendustry.req.humidity", x)) ++
-      reqBiome.map(x => Misc.toLocalF("gendustry.req.biome", x.biomeName)) ++
-      reqBlock.map(x => Misc.toLocalF("gendustry.req.block", new ItemStack(x, 1, reqBlockMeta.getOrElse(0)).getDisplayName))
-  }
+    var isSecret = false
 
-  override def getBaseChance = chance
+    override def getPartner(allele: IAllele) =
+        if (allele == parent1) parent2
+        else if (allele == parent2) parent1
+        else null
 
-  override val getTemplate = getRoot.getTemplate(result.getUID)
-  override def getAllele1 = parent1
-  override def getAllele0 = parent2
+    override def isPartner(allele: IAllele) =
+        allele == parent1 || allele == parent2
+
+    override def getSpecialConditions = {
+        import scala.collection.JavaConversions._
+        reqTemperature.map(x => Misc.toLocalF("gendustry.req.temperature", x)) ++
+                reqHumidity.map(x => Misc.toLocalF("gendustry.req.humidity", x)) ++
+                reqBiome.map(x => Misc.toLocalF("gendustry.req.biome", x.biomeName)) ++
+                reqBlock.map(x => Misc.toLocalF("gendustry.req.block", new ItemStack(x, 1, reqBlockMeta.getOrElse(0)).getDisplayName))
+    }
+
+    override def getBaseChance = chance
+
+    override val getTemplate = getRoot.getTemplate(result.getUID)
+
+    override def getAllele1 = parent1
+
+    override def getAllele0 = parent2
 }

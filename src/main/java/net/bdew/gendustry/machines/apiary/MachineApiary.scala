@@ -15,12 +15,14 @@ import net.bdew.lib.machine.{Machine, PoweredMachine}
 import net.minecraft.entity.player.EntityPlayer
 
 object MachineApiary extends Machine("IndustrialApiary", BlockApiary) with GuiProvider with PoweredMachine {
-  def guiId = 3
-  type TEClass = TileApiary
+    def guiId = 3
 
-  lazy val baseMjPerTick = tuning.getInt("BaseMjPerTick")
+    type TEClass = TileApiary
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileApiary, player: EntityPlayer) = new GuiApiary(te, player, new ContainerApiary(te, player))
-  def getContainer(te: TileApiary, player: EntityPlayer) = new ContainerApiary(te, player)
+    lazy val baseMjPerTick = tuning.getInt("BaseMjPerTick")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileApiary, player: EntityPlayer) = new GuiApiary(te, player, new ContainerApiary(te, player))
+
+    def getContainer(te: TileApiary, player: EntityPlayer) = new ContainerApiary(te, player)
 }

@@ -13,14 +13,15 @@ import forestry.api.genetics.AlleleManager
 import net.bdew.gendustry.Gendustry
 
 object ForestryHelper {
-  def haveRoot(root: String) = AlleleManager.alleleRegistry.getSpeciesRoot("root" + root) != null
-  def getRoot(root: String) = AlleleManager.alleleRegistry.getSpeciesRoot("root" + root)
+    def haveRoot(root: String) = AlleleManager.alleleRegistry.getSpeciesRoot("root" + root) != null
 
-  def logAvailableRoots() {
-    import scala.collection.JavaConversions._
-    Gendustry.logInfo("Available Forestry species roots:")
-    for ((name, root) <- AlleleManager.alleleRegistry.getSpeciesRoot) {
-      Gendustry.logInfo(" * %s - %s", name, root.getClass.getCanonicalName)
+    def getRoot(root: String) = AlleleManager.alleleRegistry.getSpeciesRoot("root" + root)
+
+    def logAvailableRoots() {
+        import scala.collection.JavaConversions._
+        Gendustry.logInfo("Available Forestry species roots:")
+        for ((name, root) <- AlleleManager.alleleRegistry.getSpeciesRoot) {
+            Gendustry.logInfo(" * %s - %s", name, root.getClass.getCanonicalName)
+        }
     }
-  }
 }

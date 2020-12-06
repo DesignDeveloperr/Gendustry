@@ -17,12 +17,14 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 
 object MachineSampler extends Machine("Sampler", BlockSampler) with GuiProvider with ProcessorMachine {
-  def guiId = 5
-  type TEClass = TileSampler
+    def guiId = 5
 
-  lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+    type TEClass = TileSampler
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileSampler, player: EntityPlayer): GuiContainer = new GuiSampler(te, player)
-  def getContainer(te: TileSampler, player: EntityPlayer): Container = new ContainerSampler(te, player)
+    lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileSampler, player: EntityPlayer): GuiContainer = new GuiSampler(te, player)
+
+    def getContainer(te: TileSampler, player: EntityPlayer): Container = new ContainerSampler(te, player)
 }

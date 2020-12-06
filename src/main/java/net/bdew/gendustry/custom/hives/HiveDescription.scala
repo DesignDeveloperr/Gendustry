@@ -24,25 +24,29 @@ case class HiveDescription(id: String, chance: Float, yMin: Int, yMax: Int,
                            conditions: List[HiveSpawnCondition],
                            drops: List[IHiveDrop],
                            spawnDebug: Boolean
-                            ) extends IHiveDescription {
-  override lazy val getBlock = GameRegistry.findBlock(Gendustry.modId, "BeeHive" + id)
-  override val getMeta = 0
+                          ) extends IHiveDescription {
+    override lazy val getBlock = GameRegistry.findBlock(Gendustry.modId, "BeeHive" + id)
+    override val getMeta = 0
 
-  override val getHiveGen = new IHiveGen {
-    override def isValidLocation(world: World, x: Int, y: Int, z: Int): Boolean =
-      !conditions.exists(!_.isValidLocation(world, x, y, z))
-    override def canReplace(world: World, x: Int, y: Int, z: Int): Boolean = true
-    override def getYForHive(world: World, x: Int, z: Int): Int =
-      (yMin to yMax) find (y => isValidLocation(world, x, y, z) && canReplace(world, x, y, z)) getOrElse -1
-  }
+    override val getHiveGen = new IHiveGen {
+        override def isValidLocation(world: World, x: Int, y: Int, z: Int): Boolean =
+            !conditions.exists(!_.isValidLocation(world, x, y, z))
 
-  override val getGenChance = chance
+        override def canReplace(world: World, x: Int, y: Int, z: Int): Boolean = true
 
-  override def isGoodBiome(biome: BiomeGenBase): Boolean = validBiome.contains(biome)
-  override def isGoodHumidity(humidity: EnumHumidity): Boolean = validHumidity.contains(humidity)
-  override def isGoodTemperature(temperature: EnumTemperature): Boolean = validTemperature.contains(temperature)
+        override def getYForHive(world: World, x: Int, z: Int): Int =
+            (yMin to yMax) find (y => isValidLocation(world, x, y, z) && canReplace(world, x, y, z)) getOrElse -1
+    }
 
-  override def postGen(world: World, x: Int, y: Int, z: Int): Unit = {
-    if (spawnDebug) Gendustry.logInfo("Spawning hive %s at %d:%d,%d,%d", id, world.provider.dimensionId, x, y, z)
-  }
+    override val getGenChance = chance
+
+    override def isGoodBiome(biome: BiomeGenBase): Boolean = validBiome.contains(biome)
+
+    override def isGoodHumidity(humidity: EnumHumidity): Boolean = validHumidity.contains(humidity)
+
+    override def isGoodTemperature(temperature: EnumTemperature): Boolean = validTemperature.contains(temperature)
+
+    override def postGen(world: World, x: Int, y: Int, z: Int): Unit = {
+        if (spawnDebug) Gendustry.logInfo("Spawning hive %s at %d:%d,%d,%d", id, world.provider.dimensionId, x, y, z)
+    }
 }

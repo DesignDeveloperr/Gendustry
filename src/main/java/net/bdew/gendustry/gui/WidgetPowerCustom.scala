@@ -17,6 +17,6 @@ import net.bdew.lib.power.{DataSlotPower, WidgetPowerGauge}
 import scala.collection.mutable
 
 class WidgetPowerCustom(rect: Rect, texture: Texture, dSlot: DataSlotPower) extends WidgetPowerGauge(rect, texture, dSlot) {
-  override def handleTooltip(p: Point, tip: mutable.MutableList[String]) =
-    tip += DecFormat.round(dSlot.stored * Config.powerShowMultiplier) + "/" + DecFormat.round(dSlot.capacity * Config.powerShowMultiplier) + " " + Config.powerShowUnits
+    override def handleTooltip(p: Point, tip: mutable.MutableList[String]) =
+        tip += DecFormat.round(dSlot.stored * Config.powerShowMultiplier) + "/" + DecFormat.round(dSlot.capacity * Config.powerShowMultiplier) + " " + Config.powerShowUnits
 }

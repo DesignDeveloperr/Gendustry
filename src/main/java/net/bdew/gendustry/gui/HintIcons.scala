@@ -12,20 +12,20 @@ package net.bdew.gendustry.gui
 import net.bdew.lib.render.IconPreloader
 
 object HintIcons extends IconPreloader(1) {
-  val sample = TextureLoc("gendustry:hints/sample")
-  val blankSample = TextureLoc("gendustry:hints/blank_sample")
-  val labware = TextureLoc("gendustry:hints/labware")
-  val template = TextureLoc("gendustry:hints/template")
+    val sample = TextureLoc("gendustry:hints/sample")
+    val blankSample = TextureLoc("gendustry:hints/blank_sample")
+    val labware = TextureLoc("gendustry:hints/labware")
+    val template = TextureLoc("gendustry:hints/template")
 
-  val sampleOrTemplate = TextureLoc("gendustry:hints/sample_template")
-  val sampleOrTemplateBlank = TextureLoc("gendustry:hints/sample_template_blank")
-  val queenOrSapling = TextureLoc("gendustry:hints/queen_sapling")
-  val droneOrPollen = TextureLoc("gendustry:hints/drone_pollen")
-  val droneOrSapling = TextureLoc("gendustry:hints/drone_sapling")
+    val sampleOrTemplate = TextureLoc("gendustry:hints/sample_template")
+    val sampleOrTemplateBlank = TextureLoc("gendustry:hints/sample_template_blank")
+    val queenOrSapling = TextureLoc("gendustry:hints/queen_sapling")
+    val droneOrPollen = TextureLoc("gendustry:hints/drone_pollen")
+    val droneOrSapling = TextureLoc("gendustry:hints/drone_sapling")
 
-  val queen = TextureLoc("gendustry:hints/queen")
-  val drone = TextureLoc("gendustry:hints/drone")
+    val queen = TextureLoc("gendustry:hints/queen")
+    val drone = TextureLoc("gendustry:hints/drone")
 
-  val upgrade = TextureLoc("gendustry:hints/upgrade")
-  val meat = TextureLoc("gendustry:hints/meat")
+    val upgrade = TextureLoc("gendustry:hints/upgrade")
+    val meat = TextureLoc("gendustry:hints/meat")
 }

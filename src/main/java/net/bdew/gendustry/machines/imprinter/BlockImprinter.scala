@@ -18,16 +18,16 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 object BlockImprinter extends BaseMachineBlock("imprinter") with HasTE[TileImprinter] with BlockCoverable[TileImprinter] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  val TEClass = classOf[TileImprinter]
-  lazy val guiId: Int = MachineImprinter.guiId
+    val TEClass = classOf[TileImprinter]
+    lazy val guiId: Int = MachineImprinter.guiId
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      List.empty ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getItemsTooltip(data)
-    } else List.empty
-  }
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            List.empty ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
+        } else List.empty
+    }
 
 }

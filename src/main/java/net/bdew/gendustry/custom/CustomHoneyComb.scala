@@ -24,55 +24,55 @@ import net.minecraft.util.IIcon
 
 object CustomHoneyComb extends SimpleItem("HoneyComb") {
 
-  case class CombInfo(name: String, color1: Int, color2: Int)
+    case class CombInfo(name: String, color1: Int, color2: Int)
 
-  var icons: Array[IIcon] = null
+    var icons: Array[IIcon] = null
 
-  setHasSubtypes(true)
-  setMaxDamage(-1)
+    setHasSubtypes(true)
+    setMaxDamage(-1)
 
-  override def requiresMultipleRenderPasses() = true
+    override def requiresMultipleRenderPasses() = true
 
-  val data = (Tuning.getOrAddSection("HoneyCombs").filterType(classOf[ConfigSection]) map {
-    case (ident, cfg) => cfg.getInt("ID") -> CombInfo(
-      ident,
-      cfg.getColor("PrimaryColor").asRGB,
-      cfg.getColor("SecondaryColor").asRGB
-    )
-  }).toMap
+    val data = (Tuning.getOrAddSection("HoneyCombs").filterType(classOf[ConfigSection]) map {
+        case (ident, cfg) => cfg.getInt("ID") -> CombInfo(
+            ident,
+            cfg.getColor("PrimaryColor").asRGB,
+            cfg.getColor("SecondaryColor").asRGB
+        )
+    }).toMap
 
-  for ((id, comb) <- data)
-    GameRegistry.registerCustomItemStack("HoneyComb." + comb.name, new ItemStack(this, 1, id))
+    for ((id, comb) <- data)
+        GameRegistry.registerCustomItemStack("HoneyComb." + comb.name, new ItemStack(this, 1, id))
 
-  def getData(stack: ItemStack) = data.get(stack.getItemDamage)
+    def getData(stack: ItemStack) = data.get(stack.getItemDamage)
 
-  override def getIconFromDamageForRenderPass(damage: Int, pass: Int) = pass match {
-    case 0 => icons(1)
-    case _ => icons(0)
-  }
-
-  override def getColorFromItemStack(stack: ItemStack, pass: Int): Int = {
-    val data = getData(stack).getOrElse(return 0)
-    pass match {
-      case 0 => data.color1
-      case _ => data.color2
+    override def getIconFromDamageForRenderPass(damage: Int, pass: Int) = pass match {
+        case 0 => icons(1)
+        case _ => icons(0)
     }
-  }
 
-  override def getSubItems(item: Item, par2CreativeTabs: CreativeTabs, list: util.List[_]) {
-    val l = list.asInstanceOf[util.List[ItemStack]]
-    for ((id, name) <- data)
-      l.add(new ItemStack(this, 1, id))
-  }
+    override def getColorFromItemStack(stack: ItemStack, pass: Int): Int = {
+        val data = getData(stack).getOrElse(return 0)
+        pass match {
+            case 0 => data.color1
+            case _ => data.color2
+        }
+    }
 
-  override def getUnlocalizedName(stack: ItemStack) =
-    getData(stack).map(x => "%s.honeycomb.%s".format(Gendustry.modId, x.name)).getOrElse("invalid")
+    override def getSubItems(item: Item, par2CreativeTabs: CreativeTabs, list: util.List[_]) {
+        val l = list.asInstanceOf[util.List[ItemStack]]
+        for ((id, name) <- data)
+            l.add(new ItemStack(this, 1, id))
+    }
 
-  @SideOnly(Side.CLIENT)
-  override def registerIcons(reg: IIconRegister) {
-    icons = Array(
-      reg.registerIcon("forestry:beeCombs.0"),
-      reg.registerIcon("forestry:beeCombs.1")
-    )
-  }
+    override def getUnlocalizedName(stack: ItemStack) =
+        getData(stack).map(x => "%s.honeycomb.%s".format(Gendustry.modId, x.name)).getOrElse("invalid")
+
+    @SideOnly(Side.CLIENT)
+    override def registerIcons(reg: IIconRegister) {
+        icons = Array(
+            reg.registerIcon("forestry:beeCombs.0"),
+            reg.registerIcon("forestry:beeCombs.1")
+        )
+    }
 }

@@ -19,29 +19,32 @@ import net.minecraft.item.ItemStack
 
 class TemplateCraftingHandler extends ShapelessRecipeHandler {
 
-  def addRecipe() {
-    import scala.collection.JavaConversions._
-    val rec = List(new ItemStack(GeneTemplate), new ItemStack(GeneSample), new ItemStack(GeneSample))
-    val out = new ItemStack(GeneTemplate)
-    arecipes.add(new CachedShapelessRecipe(rec, out))
-  }
+    def addRecipe() {
+        import scala.collection.JavaConversions._
+        val rec = List(new ItemStack(GeneTemplate), new ItemStack(GeneSample), new ItemStack(GeneSample))
+        val out = new ItemStack(GeneTemplate)
+        arecipes.add(new CachedShapelessRecipe(rec, out))
+    }
 
-  override def loadCraftingRecipes(result: ItemStack) {
-    if (result.getItem == GeneTemplate)
-      addRecipe()
-  }
+    override def loadCraftingRecipes(result: ItemStack) {
+        if (result.getItem == GeneTemplate)
+            addRecipe()
+    }
 
-  override def loadUsageRecipes(ingredient: ItemStack) {
-    if (ingredient.getItem == GeneTemplate || ingredient.getItem == GeneSample)
-      addRecipe()
-  }
+    override def loadUsageRecipes(ingredient: ItemStack) {
+        if (ingredient.getItem == GeneTemplate || ingredient.getItem == GeneSample)
+            addRecipe()
+    }
 
-  override def drawExtras(recipe: Int) = {
-    GuiDraw.fontRenderer.drawSplitString(Misc.toLocal("gendustry.label.template.crafting"), 5, 65, 155, 0x404040)
-  }
+    override def drawExtras(recipe: Int) = {
+        GuiDraw.fontRenderer.drawSplitString(Misc.toLocal("gendustry.label.template.crafting"), 5, 65, 155, 0x404040)
+    }
 
-  override def recipiesPerPage() = 1
-  override def hasOverlay(gui: GuiContainer, container: Container, recipe: Int) = false
-  override def loadTransferRects() {}
-  override def getRecipeName = Misc.toLocal("item.gendustry.GeneTemplate.name")
+    override def recipiesPerPage() = 1
+
+    override def hasOverlay(gui: GuiContainer, container: Container, recipe: Int) = false
+
+    override def loadTransferRects() {}
+
+    override def getRecipeName = Misc.toLocal("item.gendustry.GeneTemplate.name")
 }

@@ -24,104 +24,106 @@ import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.util.IIcon
 
 object ItemApiaryUpgrade extends Item with IApiaryUpgrade with NamedItem {
-  var icons = Map.empty[Int, IIcon]
-  def name = "ApiaryUpgrade"
+    var icons = Map.empty[Int, IIcon]
 
-  setHasSubtypes(true)
-  setMaxDamage(-1)
-  setUnlocalizedName(Gendustry.modId + ".apiary.upgrade")
+    def name = "ApiaryUpgrade"
 
-  def formatModifier(f: Float, base: Float) = (if (f > base) "+" else "") + "%.0f".format((f - base) * 100) + "%"
+    setHasSubtypes(true)
+    setMaxDamage(-1)
+    setUnlocalizedName(Gendustry.modId + ".apiary.upgrade")
 
-  override def getDisplayName(stack: ItemStack) = Misc.toLocal(getUnlocalizedName(stack))
+    def formatModifier(f: Float, base: Float) = (if (f > base) "+" else "") + "%.0f".format((f - base) * 100) + "%"
 
-  override def getDisplayDetails(stack: ItemStack): util.ArrayList[String] = {
-    val list = new util.ArrayList[String]()
-    if (!Upgrades.map.contains(stack.getItemDamage)) return list
-    val upgrade = Upgrades.map(stack.getItemDamage)
-    val mods = new ApiaryModifiers
+    override def getDisplayName(stack: ItemStack) = Misc.toLocal(getUnlocalizedName(stack))
 
-    upgrade.mod(mods, 1)
+    override def getDisplayDetails(stack: ItemStack): util.ArrayList[String] = {
+        val list = new util.ArrayList[String]()
+        if (!Upgrades.map.contains(stack.getItemDamage)) return list
+        val upgrade = Upgrades.map(stack.getItemDamage)
+        val mods = new ApiaryModifiers
 
-    list.add(Misc.toLocal(Gendustry.modId + ".label.maxinstall") + " " + upgrade.maxNum.toString)
+        upgrade.mod(mods, 1)
 
-    if (mods.isAutomated)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.automated"))
-    if (mods.biomeOverride != null)
-      list.add(Misc.toLocalF(Gendustry.modId + ".label.mod.biome", mods.biomeOverride.biomeName))
-    if (mods.isSealed)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sealed"))
-    if (mods.isSelfLighted)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.selflighted"))
-    if (mods.isSunlightSimulated)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sky"))
-    if (mods.isCollectingPollen)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sieve"))
+        list.add(Misc.toLocal(Gendustry.modId + ".label.maxinstall") + " " + upgrade.maxNum.toString)
 
-    if (mods.lifespan != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.lifespan") + " " + formatModifier(mods.lifespan, 1))
-    if (mods.flowering != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.flowering") + " " + formatModifier(mods.flowering, 1))
-    if (mods.geneticDecay != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.geneticDecay") + " " + formatModifier(mods.geneticDecay, 1))
-    if (mods.mutation != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.mutation") + " " + formatModifier(mods.mutation, 1))
-    if (mods.production != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.production") + " " + formatModifier(mods.production, 1))
-    if (mods.territory != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.territory") + " " + formatModifier(mods.territory, 1))
+        if (mods.isAutomated)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.automated"))
+        if (mods.biomeOverride != null)
+            list.add(Misc.toLocalF(Gendustry.modId + ".label.mod.biome", mods.biomeOverride.biomeName))
+        if (mods.isSealed)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sealed"))
+        if (mods.isSelfLighted)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.selflighted"))
+        if (mods.isSunlightSimulated)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sky"))
+        if (mods.isCollectingPollen)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.sieve"))
 
-    if (mods.humidity != 0)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.humidity") + " " + formatModifier(mods.humidity, 0))
-    if (mods.temperature != 0)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.temperature") + " " + formatModifier(mods.temperature, 0))
+        if (mods.lifespan != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.lifespan") + " " + formatModifier(mods.lifespan, 1))
+        if (mods.flowering != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.flowering") + " " + formatModifier(mods.flowering, 1))
+        if (mods.geneticDecay != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.geneticDecay") + " " + formatModifier(mods.geneticDecay, 1))
+        if (mods.mutation != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.mutation") + " " + formatModifier(mods.mutation, 1))
+        if (mods.production != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.production") + " " + formatModifier(mods.production, 1))
+        if (mods.territory != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.territory") + " " + formatModifier(mods.territory, 1))
 
-    if (mods.energy != 1)
-      list.add(Misc.toLocal(Gendustry.modId + ".label.mod.energy") + " " + formatModifier(mods.energy, 1))
+        if (mods.humidity != 0)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.humidity") + " " + formatModifier(mods.humidity, 0))
+        if (mods.temperature != 0)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.temperature") + " " + formatModifier(mods.temperature, 0))
 
-    return list
-  }
+        if (mods.energy != 1)
+            list.add(Misc.toLocal(Gendustry.modId + ".label.mod.energy") + " " + formatModifier(mods.energy, 1))
 
-  def getStackingId(stack: ItemStack) = Item.getIdFromItem(this) * Int.MaxValue + stack.getItemDamage
-  override def addInformation(stack: ItemStack, player: EntityPlayer, list: util.List[_], par4: Boolean) {
-    list.asInstanceOf[util.List[String]].addAll(getDisplayDetails(stack))
-  }
-
-  def getMaxNumber(stack: ItemStack): Int = {
-    if (Upgrades.map.contains(stack.getItemDamage))
-      return Upgrades.map(stack.getItemDamage).maxNum
-    return 0
-  }
-
-  def applyModifiers(mods: ApiaryModifiers, stack: ItemStack) {
-    if (Upgrades.map.contains(stack.getItemDamage)) {
-      val upg = Upgrades.map(stack.getItemDamage)
-      upg.mod(mods, Misc.min(upg.maxNum, stack.stackSize))
+        return list
     }
-  }
 
-  override def getIconFromDamage(meta: Int): IIcon = {
-    if (icons.contains(meta))
-      return icons(meta)
-    return null
-  }
+    def getStackingId(stack: ItemStack) = Item.getIdFromItem(this) * Int.MaxValue + stack.getItemDamage
 
-  override def getUnlocalizedName(stack: ItemStack): String = {
-    if (Upgrades.map.contains(stack.getItemDamage))
-      return "%s.upgrades.%s".format(Gendustry.modId, Upgrades.map(stack.getItemDamage).name)
-    return "invalid"
-  }
+    override def addInformation(stack: ItemStack, player: EntityPlayer, list: util.List[_], par4: Boolean) {
+        list.asInstanceOf[util.List[String]].addAll(getDisplayDetails(stack))
+    }
 
-  override def getSubItems(par1: Item, par2CreativeTabs: CreativeTabs, list: util.List[_]) {
-    val l = list.asInstanceOf[util.List[ItemStack]]
-    for ((id, name) <- Upgrades.map)
-      l.add(new ItemStack(this, 1, id))
-  }
+    def getMaxNumber(stack: ItemStack): Int = {
+        if (Upgrades.map.contains(stack.getItemDamage))
+            return Upgrades.map(stack.getItemDamage).maxNum
+        return 0
+    }
 
-  @SideOnly(Side.CLIENT)
-  override def registerIcons(reg: IIconRegister) {
-    icons = Upgrades.map.map({
-      case (id, upgrade) => id -> reg.registerIcon(Misc.iconName(Gendustry.modId, "upgrades", upgrade.name))
-    }).toMap
-  }
+    def applyModifiers(mods: ApiaryModifiers, stack: ItemStack) {
+        if (Upgrades.map.contains(stack.getItemDamage)) {
+            val upg = Upgrades.map(stack.getItemDamage)
+            upg.mod(mods, Misc.min(upg.maxNum, stack.stackSize))
+        }
+    }
+
+    override def getIconFromDamage(meta: Int): IIcon = {
+        if (icons.contains(meta))
+            return icons(meta)
+        return null
+    }
+
+    override def getUnlocalizedName(stack: ItemStack): String = {
+        if (Upgrades.map.contains(stack.getItemDamage))
+            return "%s.upgrades.%s".format(Gendustry.modId, Upgrades.map(stack.getItemDamage).name)
+        return "invalid"
+    }
+
+    override def getSubItems(par1: Item, par2CreativeTabs: CreativeTabs, list: util.List[_]) {
+        val l = list.asInstanceOf[util.List[ItemStack]]
+        for ((id, name) <- Upgrades.map)
+            l.add(new ItemStack(this, 1, id))
+    }
+
+    @SideOnly(Side.CLIENT)
+    override def registerIcons(reg: IIconRegister) {
+        icons = Upgrades.map.map({
+            case (id, upgrade) => id -> reg.registerIcon(Misc.iconName(Gendustry.modId, "upgrades", upgrade.name))
+        }).toMap
+    }
 }

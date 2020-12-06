@@ -16,35 +16,35 @@ import net.minecraft.item.ItemStack
 
 object ItemApiImpl extends IItemAPI {
 
-  import scala.collection.JavaConversions._
+    import scala.collection.JavaConversions._
 
-  override def isEmptySample(stack: ItemStack) =
-    stack.getItem == Items.geneSampleBlank
+    override def isEmptySample(stack: ItemStack) =
+        stack.getItem == Items.geneSampleBlank
 
-  override def isFullSample(stack: ItemStack) =
-    stack.getItem == GeneSample
+    override def isFullSample(stack: ItemStack) =
+        stack.getItem == GeneSample
 
-  override def isEmptyTemplate(stack: ItemStack) =
-    stack.getItem == GeneTemplate && GeneTemplate.getSamples(stack).isEmpty
+    override def isEmptyTemplate(stack: ItemStack) =
+        stack.getItem == GeneTemplate && GeneTemplate.getSamples(stack).isEmpty
 
-  override def isFullTemplate(stack: ItemStack) =
-    stack.getItem == GeneTemplate && GeneTemplate.getSamples(stack).nonEmpty
+    override def isFullTemplate(stack: ItemStack) =
+        stack.getItem == GeneTemplate && GeneTemplate.getSamples(stack).nonEmpty
 
-  override def isCompleteTemplate(stack: ItemStack) =
-    stack.getItem == GeneTemplate && GeneTemplate.isComplete(stack)
+    override def isCompleteTemplate(stack: ItemStack) =
+        stack.getItem == GeneTemplate && GeneTemplate.isComplete(stack)
 
-  override def getTemplateGenome(stack: ItemStack) = {
-    val root = GeneTemplate.getSpecies(stack)
-    val samples = GeneTemplate.getSamples(stack)
-    val template = root.getDefaultTemplate
-    samples.foreach(x => template(x.chromosome) = x.allele)
-    root.templateAsGenome(template)
-  }
+    override def getTemplateGenome(stack: ItemStack) = {
+        val root = GeneTemplate.getSpecies(stack)
+        val samples = GeneTemplate.getSamples(stack)
+        val template = root.getDefaultTemplate
+        samples.foreach(x => template(x.chromosome) = x.allele)
+        root.templateAsGenome(template)
+    }
 
-  override def getTemplateSamples(stack: ItemStack) =
-    GeneTemplate.getSamples(stack).toList
+    override def getTemplateSamples(stack: ItemStack) =
+        GeneTemplate.getSamples(stack).toList
 
-  override def getSampleInfo(stack: ItemStack) =
-    GeneSample.getInfo(stack)
+    override def getSampleInfo(stack: ItemStack) =
+        GeneSample.getInfo(stack)
 
 }

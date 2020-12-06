@@ -21,68 +21,69 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.ForgeDirection
 
 class TileTransposer extends TileItemProcessor with TileWorker with TilePowered with TileCoverable with TileKeepData {
-  lazy val cfg = MachineTransposer
+    lazy val cfg = MachineTransposer
 
-  val outputSlots = Seq(slots.outCopy)
+    val outputSlots = Seq(slots.outCopy)
 
-  object slots {
-    val inBlank = 0
-    val inLabware = 1
-    val inTemplate = 2
-    val outCopy = 3
-  }
-
-  def getSizeInventory = 4
-
-  def canStart =
-    getStackInSlot(slots.inBlank) != null &&
-      getStackInSlot(slots.inLabware) != null &&
-      getStackInSlot(slots.inTemplate) != null
-
-  def tryStart(): Boolean = {
-    if (canStart) {
-      val tpl = getStackInSlot(slots.inTemplate)
-      if (tpl.getItem == GeneSample) {
-        output := tpl.copy()
-      } else if (tpl.getItem == GeneTemplate && GeneTemplate.getSamples(tpl) != null) {
-        output := getStackInSlot(slots.inBlank).copy()
-        GeneTemplate.getSamples(tpl).foreach(GeneTemplate.addSample(output, _))
-      } else return false
-
-      decrStackSize(slots.inBlank, 1)
-      if (worldObj.rand.nextInt(100) < cfg.labwareConsumeChance)
-        decrStackSize(slots.inLabware, 1)
-
-      return true
-    } else return false
-  }
-
-  def isValidInputs(blank: ItemStack, template: ItemStack) = (blank, template) match {
-    case (IStack(Items.geneSampleBlank), null) => true
-    case (IStack(Items.geneSampleBlank), IStack(GeneSample)) => true
-    case (null, IStack(GeneSample)) => true
-    case (IStack(GeneTemplate), null) => true
-    case (null, IStack(GeneTemplate)) => GeneTemplate.getSpecies(template) != null
-    case (IStack(GeneTemplate), IStack(GeneTemplate)) =>
-      val bsp = GeneTemplate.getSpecies(blank)
-      val tsp = GeneTemplate.getSpecies(template)
-      tsp != null && (bsp == null || bsp == tsp)
-    case _ => false
-  }
-
-  override def isItemValidForSlot(slot: Int, stack: ItemStack): Boolean = {
-    if (stack == null || stack.getItem == null) return false
-    slot match {
-      case slots.inLabware => stack.getItem == Items.labware
-      case slots.inBlank => isValidInputs(stack, getStackInSlot(slots.inTemplate))
-      case slots.inTemplate => isValidInputs(getStackInSlot(slots.inBlank), stack)
-      case _ => return false
+    object slots {
+        val inBlank = 0
+        val inLabware = 1
+        val inTemplate = 2
+        val outCopy = 3
     }
-  }
 
-  allowSided = true
-  override def canExtractItem(slot: Int, item: ItemStack, side: Int) =
-    slot == slots.outCopy || (slot == slots.inTemplate && inv(slots.inBlank) == null && (output :== null))
+    def getSizeInventory = 4
 
-  override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
+    def canStart =
+        getStackInSlot(slots.inBlank) != null &&
+                getStackInSlot(slots.inLabware) != null &&
+                getStackInSlot(slots.inTemplate) != null
+
+    def tryStart(): Boolean = {
+        if (canStart) {
+            val tpl = getStackInSlot(slots.inTemplate)
+            if (tpl.getItem == GeneSample) {
+                output := tpl.copy()
+            } else if (tpl.getItem == GeneTemplate && GeneTemplate.getSamples(tpl) != null) {
+                output := getStackInSlot(slots.inBlank).copy()
+                GeneTemplate.getSamples(tpl).foreach(GeneTemplate.addSample(output, _))
+            } else return false
+
+            decrStackSize(slots.inBlank, 1)
+            if (worldObj.rand.nextInt(100) < cfg.labwareConsumeChance)
+                decrStackSize(slots.inLabware, 1)
+
+            return true
+        } else return false
+    }
+
+    def isValidInputs(blank: ItemStack, template: ItemStack) = (blank, template) match {
+        case (IStack(Items.geneSampleBlank), null) => true
+        case (IStack(Items.geneSampleBlank), IStack(GeneSample)) => true
+        case (null, IStack(GeneSample)) => true
+        case (IStack(GeneTemplate), null) => true
+        case (null, IStack(GeneTemplate)) => GeneTemplate.getSpecies(template) != null
+        case (IStack(GeneTemplate), IStack(GeneTemplate)) =>
+            val bsp = GeneTemplate.getSpecies(blank)
+            val tsp = GeneTemplate.getSpecies(template)
+            tsp != null && (bsp == null || bsp == tsp)
+        case _ => false
+    }
+
+    override def isItemValidForSlot(slot: Int, stack: ItemStack): Boolean = {
+        if (stack == null || stack.getItem == null) return false
+        slot match {
+            case slots.inLabware => stack.getItem == Items.labware
+            case slots.inBlank => isValidInputs(stack, getStackInSlot(slots.inTemplate))
+            case slots.inTemplate => isValidInputs(getStackInSlot(slots.inBlank), stack)
+            case _ => return false
+        }
+    }
+
+    allowSided = true
+
+    override def canExtractItem(slot: Int, item: ItemStack, side: Int) =
+        slot == slots.outCopy || (slot == slots.inTemplate && inv(slots.inBlank) == null && (output :== null))
+
+    override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
 }

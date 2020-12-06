@@ -13,14 +13,15 @@ import net.bdew.gendustry.api.registries.IRegistriesApi
 import net.bdew.gendustry.fluids.{LiquidDNASources, MutagenSources, ProteinSources}
 
 object RegistriesApiImpl extends IRegistriesApi {
-  override val getMutagenRegistry = new FluidSourceWrapper("Mutagen", MutagenSources)
-  override val getProteinRegistry = new FluidSourceWrapper("Protein", ProteinSources)
-  override val getLiquidDnaRegistry = new FluidSourceWrapper("LiquidDNA", LiquidDNASources)
-  override def getMutatronOverrides = MutatronOverridesImpl
+    override val getMutagenRegistry = new FluidSourceWrapper("Mutagen", MutagenSources)
+    override val getProteinRegistry = new FluidSourceWrapper("Protein", ProteinSources)
+    override val getLiquidDnaRegistry = new FluidSourceWrapper("LiquidDNA", LiquidDNASources)
 
-  def mergeToMainRegistry(): Unit = {
-    getMutagenRegistry.doMerge()
-    getProteinRegistry.doMerge()
-    getLiquidDnaRegistry.doMerge()
-  }
+    override def getMutatronOverrides = MutatronOverridesImpl
+
+    def mergeToMainRegistry(): Unit = {
+        getMutagenRegistry.doMerge()
+        getProteinRegistry.doMerge()
+        getLiquidDnaRegistry.doMerge()
+    }
 }

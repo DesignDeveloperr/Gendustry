@@ -15,13 +15,15 @@ import net.bdew.lib.machine.{Machine, ProcessorMachine}
 import net.minecraft.entity.player.EntityPlayer
 
 object MachineExtractor extends Machine("Extractor", BlockExtractor) with GuiProvider with ProcessorMachine {
-  def guiId = 8
-  type TEClass = TileExtractor
+    def guiId = 8
 
-  lazy val tankSize = tuning.getInt("TankSize")
-  lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+    type TEClass = TileExtractor
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileExtractor, player: EntityPlayer) = new GuiExtractor(te, player)
-  def getContainer(te: TileExtractor, player: EntityPlayer) = new ContainerExtractor(te, player)
+    lazy val tankSize = tuning.getInt("TankSize")
+    lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileExtractor, player: EntityPlayer) = new GuiExtractor(te, player)
+
+    def getContainer(te: TileExtractor, player: EntityPlayer) = new ContainerExtractor(te, player)
 }

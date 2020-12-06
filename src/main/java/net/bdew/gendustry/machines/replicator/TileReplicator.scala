@@ -23,52 +23,57 @@ import net.minecraftforge.common.util.ForgeDirection
 import net.minecraftforge.fluids._
 
 class TileReplicator extends TileItemProcessor with TileWorker with TilePowered with IFluidHandler with TileCoverable with TileKeepData {
-  lazy val cfg = MachineReplicator
-  val outputSlots = Seq(slots.outIndividual)
+    lazy val cfg = MachineReplicator
+    val outputSlots = Seq(slots.outIndividual)
 
-  object slots {
-    val inTemplate = 0
-    val outIndividual = 1
-  }
+    object slots {
+        val inTemplate = 0
+        val outIndividual = 1
+    }
 
-  val dnaTank = DataSlotTankRestricted("dnaTank", this, cfg.dnaTankSize, Fluids.dna)
-  val proteinTank = DataSlotTankRestricted("proteinTank", this, cfg.proteinTankSize, Fluids.protein)
+    val dnaTank = DataSlotTankRestricted("dnaTank", this, cfg.dnaTankSize, Fluids.dna)
+    val proteinTank = DataSlotTankRestricted("proteinTank", this, cfg.proteinTankSize, Fluids.protein)
 
-  def getSizeInventory = 2
+    def getSizeInventory = 2
 
-  def canStart =
-    getStackInSlot(slots.inTemplate) != null &&
-      proteinTank.getFluidAmount >= cfg.proteinPerItem &&
-      dnaTank.getFluidAmount >= cfg.dnaPerItem &&
-      getStackInSlot(slots.outIndividual) == null
+    def canStart =
+        getStackInSlot(slots.inTemplate) != null &&
+                proteinTank.getFluidAmount >= cfg.proteinPerItem &&
+                dnaTank.getFluidAmount >= cfg.dnaPerItem &&
+                getStackInSlot(slots.outIndividual) == null
 
-  def tryStart(): Boolean = {
-    if (canStart) {
-      output := GeneticsHelper.individualFromTemplate(getStackInSlot(slots.inTemplate), cfg.makePristineBees)
-      dnaTank.drain(cfg.dnaPerItem, true)
-      proteinTank.drain(cfg.proteinPerItem, true)
-      return true
-    } else return false
-  }
+    def tryStart(): Boolean = {
+        if (canStart) {
+            output := GeneticsHelper.individualFromTemplate(getStackInSlot(slots.inTemplate), cfg.makePristineBees)
+            dnaTank.drain(cfg.dnaPerItem, true)
+            proteinTank.drain(cfg.proteinPerItem, true)
+            return true
+        } else return false
+    }
 
-  override def isItemValidForSlot(slot: Int, stack: ItemStack) =
-    slot == slots.inTemplate && stack.getItem == GeneTemplate && GeneTemplate.isComplete(stack)
+    override def isItemValidForSlot(slot: Int, stack: ItemStack) =
+        slot == slots.inTemplate && stack.getItem == GeneTemplate && GeneTemplate.isComplete(stack)
 
-  allowSided = true
-  override def canExtractItem(slot: Int, item: ItemStack, side: Int) = slot == slots.outIndividual
+    allowSided = true
 
-  def fill(from: ForgeDirection, resource: FluidStack, doFill: Boolean) =
-    if (resource.getFluid == Fluids.dna)
-      dnaTank.fill(resource, doFill)
-    else if (resource.getFluid == Fluids.protein)
-      proteinTank.fill(resource, doFill)
-    else 0
+    override def canExtractItem(slot: Int, item: ItemStack, side: Int) = slot == slots.outIndividual
 
-  def drain(from: ForgeDirection, resource: FluidStack, doDrain: Boolean) = null
-  def drain(from: ForgeDirection, maxDrain: Int, doDrain: Boolean) = null
-  def canFill(from: ForgeDirection, fluid: Fluid) = fluid == Fluids.dna || fluid == Fluids.protein
-  def canDrain(from: ForgeDirection, fluid: Fluid) = false
-  def getTankInfo(from: ForgeDirection) = Array(dnaTank.getInfo, proteinTank.getInfo)
+    def fill(from: ForgeDirection, resource: FluidStack, doFill: Boolean) =
+        if (resource.getFluid == Fluids.dna)
+            dnaTank.fill(resource, doFill)
+        else if (resource.getFluid == Fluids.protein)
+            proteinTank.fill(resource, doFill)
+        else 0
 
-  override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
+    def drain(from: ForgeDirection, resource: FluidStack, doDrain: Boolean) = null
+
+    def drain(from: ForgeDirection, maxDrain: Int, doDrain: Boolean) = null
+
+    def canFill(from: ForgeDirection, fluid: Fluid) = fluid == Fluids.dna || fluid == Fluids.protein
+
+    def canDrain(from: ForgeDirection, fluid: Fluid) = false
+
+    def getTankInfo(from: ForgeDirection) = Array(dnaTank.getInfo, proteinTank.getInfo)
+
+    override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
 }

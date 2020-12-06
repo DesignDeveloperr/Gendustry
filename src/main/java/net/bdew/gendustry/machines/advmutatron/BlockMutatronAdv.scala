@@ -18,17 +18,17 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 object BlockMutatronAdv extends BaseMachineBlock("mutatron_adv") with HasTE[TileMutatronAdv] with BlockCoverable[TileMutatronAdv] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  val TEClass = classOf[TileMutatronAdv]
-  lazy val guiId = MachineMutatronAdv.guiId
+    val TEClass = classOf[TileMutatronAdv]
+    lazy val guiId = MachineMutatronAdv.guiId
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      List.empty ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getTankTooltip(data, "tank") ++
-        BlockTooltipHelper.getItemsTooltip(data)
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            List.empty ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getTankTooltip(data, "tank") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
 
-    } else List.empty
-  }
+        } else List.empty
+    }
 }

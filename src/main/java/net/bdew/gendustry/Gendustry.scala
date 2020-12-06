@@ -37,104 +37,104 @@ import org.apache.logging.log4j.Logger
 
 @Mod(modid = Gendustry.modId, version = "GENDUSTRY_VER", name = "Gendustry", dependencies = "required-after:Forestry@[4.0.0.0,);after:BuildCraft|energy;after:BuildCraft|Silicon;after:IC2;after:CoFHCore;after:BinnieCore;after:ExtraBees;after:ExtraTrees;after:MineFactoryReloaded;after:MagicBees;required-after:bdlib@[BDLIB_VER,)", modLanguage = "scala")
 object Gendustry {
-  var log: Logger = null
-  var instance = this
+    var log: Logger = null
+    var instance = this
 
-  final val modId = "gendustry"
-  final val channel = "bdew.gendustry"
+    final val modId = "gendustry"
+    final val channel = "bdew.gendustry"
 
-  var configDir: File = null
+    var configDir: File = null
 
-  def logDebug(msg: String, args: Any*) = log.debug(msg.format(args: _*))
+    def logDebug(msg: String, args: Any*) = log.debug(msg.format(args: _*))
 
-  def logInfo(msg: String, args: Any*) = log.info(msg.format(args: _*))
+    def logInfo(msg: String, args: Any*) = log.info(msg.format(args: _*))
 
-  def logWarn(msg: String, args: Any*) = log.warn(msg.format(args: _*))
+    def logWarn(msg: String, args: Any*) = log.warn(msg.format(args: _*))
 
-  def logError(msg: String, args: Any*) = log.error(msg.format(args: _*))
+    def logError(msg: String, args: Any*) = log.error(msg.format(args: _*))
 
-  def logWarnException(msg: String, t: Throwable, args: Any*) = log.warn(msg.format(args: _*), t)
+    def logWarnException(msg: String, t: Throwable, args: Any*) = log.warn(msg.format(args: _*), t)
 
-  def logErrorException(msg: String, t: Throwable, args: Any*) = log.error(msg.format(args: _*), t)
+    def logErrorException(msg: String, t: Throwable, args: Any*) = log.error(msg.format(args: _*), t)
 
-  @EventHandler
-  def preInit(event: FMLPreInitializationEvent) {
-    log = event.getModLog
+    @EventHandler
+    def preInit(event: FMLPreInitializationEvent) {
+        log = event.getModLog
 
-    GendustryAPI.Items = ItemApiImpl
-    GendustryAPI.Blocks = BlockApiImpl
-    GendustryAPI.Registries = RegistriesApiImpl
-    GendustryAPI.ConfigLoader = TuningLoader
+        GendustryAPI.Items = ItemApiImpl
+        GendustryAPI.Blocks = BlockApiImpl
+        GendustryAPI.Registries = RegistriesApiImpl
+        GendustryAPI.ConfigLoader = TuningLoader
 
-    PowerProxy.logModVersions()
-    ItemPush.init()
+        PowerProxy.logModVersions()
+        ItemPush.init()
 
-    ForestryHelper.logAvailableRoots()
+        ForestryHelper.logAvailableRoots()
 
-    configDir = new File(event.getModConfigurationDirectory, "gendustry")
-    TuningLoader.loadConfigFiles()
+        configDir = new File(event.getModConfigurationDirectory, "gendustry")
+        TuningLoader.loadConfigFiles()
 
-    GendustryErrorStates.init()
+        GendustryErrorStates.init()
 
-    if (Misc.haveModVersion("BuildCraftAPI|statements"))
-      TriggerProvider.registerTriggers()
+        if (Misc.haveModVersion("BuildCraftAPI|statements"))
+            TriggerProvider.registerTriggers()
 
-    Fluids.load()
-    Blocks.load()
-    Items.load()
-    Machines.load()
+        Fluids.load()
+        Blocks.load()
+        Items.load()
+        Machines.load()
 
-    if (event.getSide == Side.CLIENT) {
-      ResourceListener.init()
-      HintIcons.init()
-    }
-  }
-
-  @EventHandler
-  def init(event: FMLInitializationEvent) {
-    if (event.getSide.isClient)
-      Config.load(new File(configDir, "client.config"))
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, Config.guiHandler)
-
-    GameRegistry.addRecipe(new GeneRecipe)
-    RecipeSorter.register("gendustry:GeneCopyRecipe", classOf[GeneRecipe], RecipeSorter.Category.SHAPELESS, "")
-
-    if (Tuning.getSection("Power").getSection("RedstoneCharging").getBoolean("Enabled")) {
-      GameRegistry.addRecipe(new ChargeRecipe)
-      RecipeSorter.register("gendustry:ChargeRecipe", classOf[ChargeRecipe], RecipeSorter.Category.SHAPELESS, "")
+        if (event.getSide == Side.CLIENT) {
+            ResourceListener.init()
+            HintIcons.init()
+        }
     }
 
-    Upgrades.init()
-    if (ForestryHelper.haveRoot("Bees")) {
-      CustomContent.registerBranches()
-      CustomContent.registerSpecies()
-    } else {
-      logInfo("Apiculture module seems to be disabled in Forestry, not registering custom bees")
-    }
-    FMLInterModComms.sendMessage("Waila", "register", "net.bdew.gendustry.waila.WailaHandler.loadCallback")
-  }
+    @EventHandler
+    def init(event: FMLInitializationEvent) {
+        if (event.getSide.isClient)
+            Config.load(new File(configDir, "client.config"))
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, Config.guiHandler)
 
-  @EventHandler
-  def postInit(event: FMLPostInitializationEvent) {
-    TuningLoader.loadDelayed()
-    if (ForestryHelper.haveRoot("Bees")) {
-      CustomFlowerAlleles.registerAlleles()
-      CustomContent.registerTemplates()
-      CustomContent.registerMutations()
-      CustomHives.registerHives()
-    }
-    if (event.getSide == Side.CLIENT) {
-      GeneticsCache.load()
-      GendustryCreativeTabs.init()
-    }
-    RegistriesApiImpl.mergeToMainRegistry()
-  }
+        GameRegistry.addRecipe(new GeneRecipe)
+        RecipeSorter.register("gendustry:GeneCopyRecipe", classOf[GeneRecipe], RecipeSorter.Category.SHAPELESS, "")
 
-  @EventHandler
-  def serverStarting(event: FMLServerStartingEvent) {
-    val commandHandler = event.getServer.getCommandManager.asInstanceOf[CommandHandler]
-    commandHandler.registerCommand(new CommandGiveTemplate)
-    commandHandler.registerCommand(new CommandGiveSample)
-    commandHandler.registerCommand(new CommandDumpAlleles)
-  }
+        if (Tuning.getSection("Power").getSection("RedstoneCharging").getBoolean("Enabled")) {
+            GameRegistry.addRecipe(new ChargeRecipe)
+            RecipeSorter.register("gendustry:ChargeRecipe", classOf[ChargeRecipe], RecipeSorter.Category.SHAPELESS, "")
+        }
+
+        Upgrades.init()
+        if (ForestryHelper.haveRoot("Bees")) {
+            CustomContent.registerBranches()
+            CustomContent.registerSpecies()
+        } else {
+            logInfo("Apiculture module seems to be disabled in Forestry, not registering custom bees")
+        }
+        FMLInterModComms.sendMessage("Waila", "register", "net.bdew.gendustry.waila.WailaHandler.loadCallback")
+    }
+
+    @EventHandler
+    def postInit(event: FMLPostInitializationEvent) {
+        TuningLoader.loadDelayed()
+        if (ForestryHelper.haveRoot("Bees")) {
+            CustomFlowerAlleles.registerAlleles()
+            CustomContent.registerTemplates()
+            CustomContent.registerMutations()
+            CustomHives.registerHives()
+        }
+        if (event.getSide == Side.CLIENT) {
+            GeneticsCache.load()
+            GendustryCreativeTabs.init()
+        }
+        RegistriesApiImpl.mergeToMainRegistry()
+    }
+
+    @EventHandler
+    def serverStarting(event: FMLServerStartingEvent) {
+        val commandHandler = event.getServer.getCommandManager.asInstanceOf[CommandHandler]
+        commandHandler.registerCommand(new CommandGiveTemplate)
+        commandHandler.registerCommand(new CommandGiveSample)
+        commandHandler.registerCommand(new CommandDumpAlleles)
+    }
 }

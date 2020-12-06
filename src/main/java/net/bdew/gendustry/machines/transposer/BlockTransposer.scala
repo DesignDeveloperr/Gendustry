@@ -18,15 +18,15 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 object BlockTransposer extends BaseMachineBlock("transposer") with HasTE[TileTransposer] with BlockCoverable[TileTransposer] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  val TEClass = classOf[TileTransposer]
-  lazy val guiId: Int = MachineTransposer.guiId
+    val TEClass = classOf[TileTransposer]
+    lazy val guiId: Int = MachineTransposer.guiId
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      List.empty ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getItemsTooltip(data)
-    } else List.empty
-  }
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            List.empty ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
+        } else List.empty
+    }
 }

@@ -10,17 +10,17 @@
 package net.bdew.gendustry.gui.rscontrol
 
 object RSMode extends Enumeration {
-  val ALWAYS = Value(0, "ALWAYS")
-  val RS_ON = Value(1, "RS_ON")
-  val RS_OFF = Value(2, "RS_OFF")
-  val NEVER = Value(3, "NEVER")
+    val ALWAYS = Value(0, "ALWAYS")
+    val RS_ON = Value(1, "RS_ON")
+    val RS_OFF = Value(2, "RS_OFF")
+    val NEVER = Value(3, "NEVER")
 
-  final val RSMODE_SLOT_NUM = 1000
+    final val RSMODE_SLOT_NUM = 1000
 
-  val next = Map(
-    RSMode.ALWAYS -> RSMode.RS_ON,
-    RSMode.RS_ON -> RSMode.RS_OFF,
-    RSMode.RS_OFF -> RSMode.NEVER,
-    RSMode.NEVER -> RSMode.ALWAYS
-  )
+    val next = Map(
+        RSMode.ALWAYS -> RSMode.RS_ON,
+        RSMode.RS_ON -> RSMode.RS_OFF,
+        RSMode.RS_OFF -> RSMode.NEVER,
+        RSMode.NEVER -> RSMode.ALWAYS
+    )
 }

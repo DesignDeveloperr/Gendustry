@@ -23,39 +23,39 @@ import net.minecraft.nbt.NBTTagCompound
 
 object GeneSample extends SimpleItem("GeneSample") {
 
-  setMaxStackSize(1)
-  setContainerItem(Items.geneSampleBlank)
+    setMaxStackSize(1)
+    setContainerItem(Items.geneSampleBlank)
 
-  override def getCreativeTabs = Array(GendustryCreativeTabs.main, GendustryCreativeTabs.samples)
+    override def getCreativeTabs = Array(GendustryCreativeTabs.main, GendustryCreativeTabs.samples)
 
-  override def getSubItems(item: Item, tab: CreativeTabs, list: util.List[_]) {
-    import scala.collection.JavaConversions._
-    val l = list.asInstanceOf[util.List[ItemStack]]
-    tab match {
-      case GendustryCreativeTabs.main => l.add(new ItemStack(this))
-      case GendustryCreativeTabs.samples =>
-        l.addAll(GeneticsCache.geneSamples map newStack)
-      case _ =>
+    override def getSubItems(item: Item, tab: CreativeTabs, list: util.List[_]) {
+        import scala.collection.JavaConversions._
+        val l = list.asInstanceOf[util.List[ItemStack]]
+        tab match {
+            case GendustryCreativeTabs.main => l.add(new ItemStack(this))
+            case GendustryCreativeTabs.samples =>
+                l.addAll(GeneticsCache.geneSamples map newStack)
+            case _ =>
+        }
     }
-  }
 
-  def newStack(info: GeneSampleInfo): ItemStack = {
-    val stack = new ItemStack(this)
-    val tag = new NBTTagCompound()
-    info.writeToNBT(tag)
-    stack.setTagCompound(tag)
-    return stack
-  }
-
-  def getInfo(stack: ItemStack): GeneSampleInfo = GeneSampleInfo.fromNBT(stack.getTagCompound)
-
-  override def addInformation(stack: ItemStack, player: EntityPlayer, l: util.List[_], par4: Boolean) = {
-    import scala.collection.JavaConverters._
-    if (stack.hasTagCompound) {
-      val tip = l.asInstanceOf[util.List[String]].asScala
-      val info = getInfo(stack)
-      tip += Misc.toLocal("gendustry.label.sample." + info.root.getUID)
-      tip += info.getLocalizedName
+    def newStack(info: GeneSampleInfo): ItemStack = {
+        val stack = new ItemStack(this)
+        val tag = new NBTTagCompound()
+        info.writeToNBT(tag)
+        stack.setTagCompound(tag)
+        return stack
     }
-  }
+
+    def getInfo(stack: ItemStack): GeneSampleInfo = GeneSampleInfo.fromNBT(stack.getTagCompound)
+
+    override def addInformation(stack: ItemStack, player: EntityPlayer, l: util.List[_], par4: Boolean) = {
+        import scala.collection.JavaConverters._
+        if (stack.hasTagCompound) {
+            val tip = l.asInstanceOf[util.List[String]].asScala
+            val info = getInfo(stack)
+            tip += Misc.toLocal("gendustry.label.sample." + info.root.getUID)
+            tip += info.getLocalizedName
+        }
+    }
 }

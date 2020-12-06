@@ -14,32 +14,37 @@ import net.minecraft.block.Block
 import net.minecraft.world.World
 
 trait BlockFilter {
-  def matches(world: World, x: Int, y: Int, z: Int): Boolean
-  def getDesctiption: String
+    def matches(world: World, x: Int, y: Int, z: Int): Boolean
+
+    def getDesctiption: String
 }
 
 case class BlockFilterList(valid: Set[(Block, Int)]) extends BlockFilter {
-  override def matches(world: World, x: Int, y: Int, z: Int) =
-    valid.exists { case (block, meta) => block == world.getBlock(x, y, z) && (meta == -1 || meta == world.getBlockMetadata(x, y, z)) }
-  override def getDesctiption: String = {
-    val names = for ((block, meta) <- valid.toList) yield {
-      GameData.getBlockRegistry.getNameForObject(block) + (if (meta > 0) "@%d".format(meta) else "@*")
+    override def matches(world: World, x: Int, y: Int, z: Int) =
+        valid.exists { case (block, meta) => block == world.getBlock(x, y, z) && (meta == -1 || meta == world.getBlockMetadata(x, y, z)) }
+
+    override def getDesctiption: String = {
+        val names = for ((block, meta) <- valid.toList) yield {
+            GameData.getBlockRegistry.getNameForObject(block) + (if (meta > 0) "@%d".format(meta) else "@*")
+        }
+        names.mkString(" OR ")
     }
-    names.mkString(" OR ")
-  }
 }
 
 object BlockFilterAir extends BlockFilter {
-  override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.isAirBlock(x, y, z)
-  override def getDesctiption: String = "[AIR]"
+    override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.isAirBlock(x, y, z)
+
+    override def getDesctiption: String = "[AIR]"
 }
 
 object BlockFilterReplaceable extends BlockFilter {
-  override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.getBlock(x, y, z).getMaterial.isReplaceable
-  override def getDesctiption: String = "[REPLACEABLE]"
+    override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.getBlock(x, y, z).getMaterial.isReplaceable
+
+    override def getDesctiption: String = "[REPLACEABLE]"
 }
 
 object BlockFilterLeaves extends BlockFilter {
-  override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.getBlock(x, y, z).isLeaves(world, x, y, z)
-  override def getDesctiption: String = "[LEAVES]"
+    override def matches(world: World, x: Int, y: Int, z: Int): Boolean = world.getBlock(x, y, z).isLeaves(world, x, y, z)
+
+    override def getDesctiption: String = "[LEAVES]"
 }

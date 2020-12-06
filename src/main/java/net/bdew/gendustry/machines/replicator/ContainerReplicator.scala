@@ -14,9 +14,9 @@ import net.bdew.lib.gui.{BaseContainer, SlotValidating}
 import net.minecraft.entity.player.EntityPlayer
 
 class ContainerReplicator(val te: TileReplicator, player: EntityPlayer) extends BaseContainer(te) with ContainerDataSlots {
-  lazy val dataSource = te
+    lazy val dataSource = te
 
-  addSlotToContainer(new SlotValidating(te, te.slots.inTemplate, 98, 17))
-  addSlotToContainer(new SlotValidating(te, te.slots.outIndividual, 142, 41))
-  bindPlayerInventory(player.inventory, 8, 84, 142)
+    addSlotToContainer(new SlotValidating(te, te.slots.inTemplate, 98, 17))
+    addSlotToContainer(new SlotValidating(te, te.slots.outIndividual, 142, 41))
+    bindPlayerInventory(player.inventory, 8, 84, 142)
 }

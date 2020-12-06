@@ -19,40 +19,40 @@ import net.bdew.gendustry.misc.GendustryCreativeTabs
 import net.bdew.lib.config.ItemManager
 
 object Items extends ItemManager(GendustryCreativeTabs.main) {
-  val labware = regSimpleItem("Labware")
-  val waste = regSimpleItem("Waste")
-  val geneSampleBlank = regSimpleItem("GeneSampleBlank")
+    val labware = regSimpleItem("Labware")
+    val waste = regSimpleItem("Waste")
+    val geneSampleBlank = regSimpleItem("GeneSampleBlank")
 
-  regItem(GeneSample).setCreativeTab(GendustryCreativeTabs.samples)
-  regItem(GeneTemplate).setCreativeTab(GendustryCreativeTabs.templates)
+    regItem(GeneSample).setCreativeTab(GendustryCreativeTabs.samples)
+    regItem(GeneTemplate).setCreativeTab(GendustryCreativeTabs.templates)
 
-  regItem(ItemApiaryUpgrade)
+    regItem(ItemApiaryUpgrade)
 
-  regItem(IndustrialGrafter)
-  regItem(IndustrialScoop)
+    regItem(IndustrialGrafter)
+    regItem(IndustrialScoop)
 
-  regItem(CustomHoneyComb)
-  regItem(CustomHoneyDrop)
+    regItem(CustomHoneyComb)
+    regItem(CustomHoneyDrop)
 
-  regSimpleItem("MutagenTank")
-  regSimpleItem("BeeReceptacle")
-  regSimpleItem("PowerModule")
-  regSimpleItem("GeneticsProcessor")
-  regSimpleItem("EnvProcessor")
-  regSimpleItem("UpgradeFrame")
-  regSimpleItem("ClimateModule")
+    regSimpleItem("MutagenTank")
+    regSimpleItem("BeeReceptacle")
+    regSimpleItem("PowerModule")
+    regSimpleItem("GeneticsProcessor")
+    regSimpleItem("EnvProcessor")
+    regSimpleItem("UpgradeFrame")
+    regSimpleItem("ClimateModule")
 
-  if (ForestryHelper.haveRoot("Trees")) {
-    regItem(PollenKit)
-  }
+    if (ForestryHelper.haveRoot("Trees")) {
+        regItem(PollenKit)
+    }
 
-  if (ForestryHelper.haveRoot("Bees")) {
-    regItem(HiveSpawnDebugger)
-  }
+    if (ForestryHelper.haveRoot("Bees")) {
+        regItem(HiveSpawnDebugger)
+    }
 
-  val coverEject = regItem(EjectCover)
-  val coverImport = regItem(ImportCover)
-  regItem(ErrorSensorCover)
+    val coverEject = regItem(EjectCover)
+    val coverImport = regItem(ImportCover)
+    regItem(ErrorSensorCover)
 
-  Gendustry.logInfo("Items loaded")
+    Gendustry.logInfo("Items loaded")
 }

@@ -22,33 +22,33 @@ import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
 object BlockMutagenProducer extends BaseMachineBlock("mutagen_producer") with HasTE[TileMutagenProducer] with BlockCoverable[TileMutagenProducer] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  val TEClass = classOf[TileMutagenProducer]
-  lazy val guiId = MachineMutagenProducer.guiId
+    val TEClass = classOf[TileMutagenProducer]
+    lazy val guiId = MachineMutagenProducer.guiId
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      List.empty ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getTankTooltip(data, "tank") ++
-        BlockTooltipHelper.getItemsTooltip(data)
-    } else List.empty
-  }
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            List.empty ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getTankTooltip(data, "tank") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
+        } else List.empty
+    }
 
-  override def harvestBlock(world: World, player: EntityPlayer, x: Int, y: Int, z: Int, meta: Int): Unit = {
-    System.out.println("234234234")
-  }
+    override def harvestBlock(world: World, player: EntityPlayer, x: Int, y: Int, z: Int, meta: Int): Unit = {
+        System.out.println("234234234")
+    }
 
-  override def breakBlock(world: World, x: Int, y: Int, z: Int, block: Block, meta: Int): Unit = {
-    System.out.println("regergreg")
-  }
+    override def breakBlock(world: World, x: Int, y: Int, z: Int, block: Block, meta: Int): Unit = {
+        System.out.println("regergreg")
+    }
 
-  override def dismantleBlock(player: EntityPlayer, world: World, x: Int, y: Int, z: Int, returnDrops: Boolean): util.ArrayList[ItemStack] = {
-    System.out.println("ddddddd")
-    super.dismantleBlock(player, world, x, y, z, returnDrops)
-  }
+    override def dismantleBlock(player: EntityPlayer, world: World, x: Int, y: Int, z: Int, returnDrops: Boolean): util.ArrayList[ItemStack] = {
+        System.out.println("ddddddd")
+        super.dismantleBlock(player, world, x, y, z, returnDrops)
+    }
 
-  override def getSavedBlock(world: World, x: Int, y: Int, z: Int, metadata: Int): ItemStack = {
-    null
-  }
+    override def getSavedBlock(world: World, x: Int, y: Int, z: Int, metadata: Int): ItemStack = {
+        null
+    }
 }

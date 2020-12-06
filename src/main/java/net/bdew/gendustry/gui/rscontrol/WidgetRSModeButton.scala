@@ -21,27 +21,27 @@ import net.minecraft.util.ResourceLocation
 import scala.collection.mutable
 
 class WidgetRSModeButton(p: Point, te: TileRSControllable, container: ContainerRSControllable) extends Widget {
-  val rect = new Rect(p, 16, 16)
-  val iconRect = new Rect(p +(1, 1), 14, 14)
+    val rect = new Rect(p, 16, 16)
+    val iconRect = new Rect(p + (1, 1), 14, 14)
 
-  var icon: Texture = null
-  var hover: String = null
+    var icon: Texture = null
+    var hover: String = null
 
-  override def draw(mouse: Point) {
-    if (rect.contains(mouse))
-      parent.drawTexture(rect, Textures.button16.hover)
-    else
-      parent.drawTexture(rect, Textures.button16.base)
+    override def draw(mouse: Point) {
+        if (rect.contains(mouse))
+            parent.drawTexture(rect, Textures.button16.hover)
+        else
+            parent.drawTexture(rect, Textures.button16.base)
 
-    parent.drawTexture(iconRect, Textures.button16.iconRSMode(te.rsmode))
-  }
+        parent.drawTexture(iconRect, Textures.button16.iconRSMode(te.rsmode))
+    }
 
-  override def handleTooltip(p: Point, tip: mutable.MutableList[String]) {
-    tip += Misc.toLocal("gendustry.rsmode." + te.rsmode.value.toString.toLowerCase(Locale.US))
-  }
+    override def handleTooltip(p: Point, tip: mutable.MutableList[String]) {
+        tip += Misc.toLocal("gendustry.rsmode." + te.rsmode.value.toString.toLowerCase(Locale.US))
+    }
 
-  override def mouseClicked(p: Point, button: Int) {
-    Client.minecraft.getSoundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F))
-    Client.minecraft.playerController.windowClick(container.windowId, container.RSMODE_SLOT_NUM, RSMode.next(te.rsmode).id, 0, Client.player)
-  }
+    override def mouseClicked(p: Point, button: Int) {
+        Client.minecraft.getSoundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F))
+        Client.minecraft.playerController.windowClick(container.windowId, container.RSMODE_SLOT_NUM, RSMode.next(te.rsmode).id, 0, Client.player)
+    }
 }

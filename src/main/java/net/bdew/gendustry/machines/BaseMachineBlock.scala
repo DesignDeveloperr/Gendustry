@@ -21,27 +21,27 @@ import net.minecraft.world.{Explosion, World}
 object MachineMaterial extends Material(MapColor.ironColor)
 
 class BaseMachineBlock(name: String) extends Block(MachineMaterial) {
-  setBlockName(Gendustry.modId + "." + name)
-  setHardness(2)
+    setBlockName(Gendustry.modId + "." + name)
+    setHardness(2)
 
-  var topIcon: IIcon = null
-  var bottomIcon: IIcon = null
+    var topIcon: IIcon = null
+    var bottomIcon: IIcon = null
 
-  override def getIcon(side: Int, meta: Int): IIcon = {
-    side match {
-      case 0 =>
-        return bottomIcon
-      case 1 =>
-        return topIcon
-      case _ =>
-        return blockIcon
+    override def getIcon(side: Int, meta: Int): IIcon = {
+        side match {
+            case 0 =>
+                return bottomIcon
+            case 1 =>
+                return topIcon
+            case _ =>
+                return blockIcon
+        }
     }
-  }
 
-  @SideOnly(Side.CLIENT)
-  override def registerBlockIcons(reg: IIconRegister) {
-    bottomIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "bottom"))
-    topIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "top"))
-    blockIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "side"))
-  }
+    @SideOnly(Side.CLIENT)
+    override def registerBlockIcons(reg: IIconRegister) {
+        bottomIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "bottom"))
+        topIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "top"))
+        blockIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, name, "side"))
+    }
 }

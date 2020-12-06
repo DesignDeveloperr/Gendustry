@@ -13,16 +13,16 @@ import net.bdew.lib.recipes.RecipeParser
 import net.bdew.lib.recipes.gencfg.GenericConfigParser
 
 trait ParserAlleles extends RecipeParser with GenericConfigParser {
-  private def blocks = spec ~ ("," ~> spec).* ^^ { case sp1 ~ spl => List(sp1) ++ spl }
+    private def blocks = spec ~ ("," ~> spec).* ^^ { case sp1 ~ spl => List(sp1) ++ spl }
 
-  private def flowerStatement = (
-    "Accepts" ~> blocks ^^ FADAccepts
-      | "Spread" ~> spec ~ decimalNumber ^^ { case spec ~ chance => FADSpread(spec, chance.toDouble) }
-      | "Dominant" ^^^ FADDominant(true)
-      | "Recessive" ^^^ FADDominant(false)
-    )
+    private def flowerStatement = (
+            "Accepts" ~> blocks ^^ FADAccepts
+                    | "Spread" ~> spec ~ decimalNumber ^^ { case spec ~ chance => FADSpread(spec, chance.toDouble) }
+                    | "Dominant" ^^^ FADDominant(true)
+                    | "Recessive" ^^^ FADDominant(false)
+            )
 
-  private def flowerDef = "FlowerAllele" ~> str ~ ("{" ~> flowerStatement.* <~ "}") ^^ { case id ~ statements => CSFlowerAllele(id, statements) }
+    private def flowerDef = "FlowerAllele" ~> str ~ ("{" ~> flowerStatement.* <~ "}") ^^ { case id ~ statements => CSFlowerAllele(id, statements) }
 
-  override def configStatement = super.configStatement | flowerDef
+    override def configStatement = super.configStatement | flowerDef
 }

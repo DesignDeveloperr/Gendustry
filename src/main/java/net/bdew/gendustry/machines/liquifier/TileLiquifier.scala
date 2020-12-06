@@ -25,60 +25,64 @@ import net.minecraftforge.common.util.ForgeDirection
 import net.minecraftforge.fluids._
 
 class TileLiquifier extends TileBaseProcessor with TileWorker with TilePowered with ExposeTank with TileCoverable with TileKeepData {
-  lazy val cfg = MachineLiquifier
+    lazy val cfg = MachineLiquifier
 
-  val tank = DataSlotTankRestricted("tank", this, cfg.tankSize, Fluids.protein).setUpdate(UpdateKind.GUI, UpdateKind.SAVE)
-  val output = DataSlotInt("output", this).setUpdate(UpdateKind.SAVE)
+    val tank = DataSlotTankRestricted("tank", this, cfg.tankSize, Fluids.protein).setUpdate(UpdateKind.GUI, UpdateKind.SAVE)
+    val output = DataSlotInt("output", this).setUpdate(UpdateKind.SAVE)
 
-  object slots {
-    val inMeat = 0
-  }
-
-  def getSizeInventory = 1
-
-  def getTankFromDirection(dir: ForgeDirection): IFluidTank = tank
-
-  def isWorking = output > 0
-  def tryStart(): Boolean = {
-    if (getStackInSlot(slots.inMeat) != null) {
-      output := ProteinSources.getValue(getStackInSlot(0))
-      decrStackSize(slots.inMeat, 1)
-      return true
-    } else return false
-  }
-
-  def tryFinish(): Boolean = {
-    if (tank.fill(output, false) == output.value) {
-      tank.fill(output, true)
-      output := -1
-      return true
-    } else return false
-  }
-
-  def sendFluid() {
-    for (dir <- ForgeDirection.VALID_DIRECTIONS) {
-      val te: TileEntity = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ)
-      if (te != null && te.isInstanceOf[IFluidHandler]) {
-        val pumped = te.asInstanceOf[IFluidHandler].fill(dir.getOpposite, tank.getFluid.copy(), true)
-        if (pumped > 0) {
-          tank.drain(pumped, true)
-          if (tank.getFluidAmount <= 0) return
-        }
-      }
+    object slots {
+        val inMeat = 0
     }
-  }
 
-  override def tickServer() {
-    super.tickServer()
-    if (tank.getFluidAmount > 0) sendFluid()
-  }
+    def getSizeInventory = 1
 
-  allowSided = true
-  override def isItemValidForSlot(slot: Int, stack: ItemStack): Boolean = ProteinSources.getValue(stack) > 0
-  override def canExtractItem(slot: Int, item: ItemStack, side: Int): Boolean = false
+    def getTankFromDirection(dir: ForgeDirection): IFluidTank = tank
 
-  override def fill(from: ForgeDirection, resource: FluidStack, doFill: Boolean) = 0
-  override def canFill(from: ForgeDirection, fluid: Fluid) = false
+    def isWorking = output > 0
 
-  override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
+    def tryStart(): Boolean = {
+        if (getStackInSlot(slots.inMeat) != null) {
+            output := ProteinSources.getValue(getStackInSlot(0))
+            decrStackSize(slots.inMeat, 1)
+            return true
+        } else return false
+    }
+
+    def tryFinish(): Boolean = {
+        if (tank.fill(output, false) == output.value) {
+            tank.fill(output, true)
+            output := -1
+            return true
+        } else return false
+    }
+
+    def sendFluid() {
+        for (dir <- ForgeDirection.VALID_DIRECTIONS) {
+            val te: TileEntity = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ)
+            if (te != null && te.isInstanceOf[IFluidHandler]) {
+                val pumped = te.asInstanceOf[IFluidHandler].fill(dir.getOpposite, tank.getFluid.copy(), true)
+                if (pumped > 0) {
+                    tank.drain(pumped, true)
+                    if (tank.getFluidAmount <= 0) return
+                }
+            }
+        }
+    }
+
+    override def tickServer() {
+        super.tickServer()
+        if (tank.getFluidAmount > 0) sendFluid()
+    }
+
+    allowSided = true
+
+    override def isItemValidForSlot(slot: Int, stack: ItemStack): Boolean = ProteinSources.getValue(stack) > 0
+
+    override def canExtractItem(slot: Int, item: ItemStack, side: Int): Boolean = false
+
+    override def fill(from: ForgeDirection, resource: FluidStack, doFill: Boolean) = 0
+
+    override def canFill(from: ForgeDirection, fluid: Fluid) = false
+
+    override def isValidCover(side: ForgeDirection, cover: ItemStack) = true
 }

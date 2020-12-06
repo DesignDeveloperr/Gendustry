@@ -15,12 +15,14 @@ import net.bdew.lib.machine.{Machine, ProcessorMachine}
 import net.minecraft.entity.player.EntityPlayer
 
 object MachineLiquifier extends Machine("Liquifier", BlockLiquifier) with GuiProvider with ProcessorMachine {
-  def guiId = 7
-  type TEClass = TileLiquifier
+    def guiId = 7
 
-  lazy val tankSize = tuning.getInt("TankSize")
+    type TEClass = TileLiquifier
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileLiquifier, player: EntityPlayer) = new GuiLiquifier(te, player)
-  def getContainer(te: TileLiquifier, player: EntityPlayer) = new ContainerLiquifier(te, player)
+    lazy val tankSize = tuning.getInt("TankSize")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileLiquifier, player: EntityPlayer) = new GuiLiquifier(te, player)
+
+    def getContainer(te: TileLiquifier, player: EntityPlayer) = new ContainerLiquifier(te, player)
 }

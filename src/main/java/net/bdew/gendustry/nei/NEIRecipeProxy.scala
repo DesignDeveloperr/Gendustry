@@ -13,10 +13,10 @@ import codechicken.nei.recipe.GuiCraftingRecipe
 import net.bdew.lib.Misc
 
 object NEIRecipeProxy {
-  val hasNei = Misc.haveModVersion("NotEnoughItems")
+    val hasNei = Misc.haveModVersion("NotEnoughItems")
 
-  def openRecipes(id: String) {
-    if (hasNei)
-      GuiCraftingRecipe.openRecipeGui(id)
-  }
+    def openRecipes(id: String) {
+        if (hasNei)
+            GuiCraftingRecipe.openRecipeGui(id)
+    }
 }

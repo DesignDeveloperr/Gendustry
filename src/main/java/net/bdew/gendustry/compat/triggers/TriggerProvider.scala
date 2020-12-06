@@ -19,28 +19,28 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
 
 object TriggerProvider extends ITriggerProvider {
-  override def getInternalTriggers(container: IStatementContainer) = null
+    override def getInternalTriggers(container: IStatementContainer) = null
 
-  override def getExternalTriggers(side: ForgeDirection, tile: TileEntity) = {
-    import scala.collection.JavaConversions._
-    val triggers = new util.LinkedList[ITriggerExternal]()
+    override def getExternalTriggers(side: ForgeDirection, tile: TileEntity) = {
+        import scala.collection.JavaConversions._
+        val triggers = new util.LinkedList[ITriggerExternal]()
 
-    if (tile.isInstanceOf[IErrorLogicSource])
-      triggers.addAll(ForestryErrorTriggers.triggers)
+        if (tile.isInstanceOf[IErrorLogicSource])
+            triggers.addAll(ForestryErrorTriggers.triggers)
 
-    if (tile.isInstanceOf[TilePowered])
-      triggers.addAll(PowerTriggers.triggers)
+        if (tile.isInstanceOf[TilePowered])
+            triggers.addAll(PowerTriggers.triggers)
 
-    if (tile.isInstanceOf[TileBaseProcessor])
-      triggers.add(TriggerWorking)
+        if (tile.isInstanceOf[TileBaseProcessor])
+            triggers.add(TriggerWorking)
 
-    triggers
-  }
+        triggers
+    }
 
-  def registerTriggers() {
-    StatementManager.registerTriggerProvider(this)
-    StatementManager.registerStatement(TriggerWorking)
-    ForestryErrorTriggers.register()
-    PowerTriggers.register()
-  }
+    def registerTriggers() {
+        StatementManager.registerTriggerProvider(this)
+        StatementManager.registerStatement(TriggerWorking)
+        ForestryErrorTriggers.register()
+        PowerTriggers.register()
+    }
 }

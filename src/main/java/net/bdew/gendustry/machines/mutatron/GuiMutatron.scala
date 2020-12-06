@@ -17,17 +17,17 @@ import net.bdew.lib.gui.{BaseScreen, Color, Rect, Texture}
 import net.minecraft.entity.player.EntityPlayer
 
 class GuiMutatron(val te: TileMutatron, player: EntityPlayer) extends BaseScreen(new ContainerMutatron(te, player), 176, 166) {
-  val background = Texture(Gendustry.modId, "textures/gui/mutatron.png", rect)
+    val background = Texture(Gendustry.modId, "textures/gui/mutatron.png", rect)
 
-  override def initGui() {
-    super.initGui()
-    widgets.add(new WidgetProgressBarNEI(new Rect(89, 41, 40, 15), Textures.greenProgress(40), te.progress, "Mutatron"))
-    widgets.add(new WidgetPowerCustom(new Rect(8, 19, 16, 58), Textures.powerFill, te.power))
-    widgets.add(new WidgetFluidGauge(new Rect(32, 19, 16, 58), Textures.tankOverlay, te.tank))
-    widgets.add(new WidgetLabel(Misc.toLocal("tile.gendustry.mutatron.name"), 8, 6, Color.darkGray))
+    override def initGui() {
+        super.initGui()
+        widgets.add(new WidgetProgressBarNEI(new Rect(89, 41, 40, 15), Textures.greenProgress(40), te.progress, "Mutatron"))
+        widgets.add(new WidgetPowerCustom(new Rect(8, 19, 16, 58), Textures.powerFill, te.power))
+        widgets.add(new WidgetFluidGauge(new Rect(32, 19, 16, 58), Textures.tankOverlay, te.tank))
+        widgets.add(new WidgetLabel(Misc.toLocal("tile.gendustry.mutatron.name"), 8, 6, Color.darkGray))
 
-    inventorySlots.getSlotFromInventory(te, te.slots.inIndividual1).setBackgroundIcon(HintIcons.queenOrSapling)
-    inventorySlots.getSlotFromInventory(te, te.slots.inIndividual2).setBackgroundIcon(HintIcons.droneOrPollen)
-    inventorySlots.getSlotFromInventory(te, te.slots.inLabware).setBackgroundIcon(HintIcons.labware)
-  }
+        inventorySlots.getSlotFromInventory(te, te.slots.inIndividual1).setBackgroundIcon(HintIcons.queenOrSapling)
+        inventorySlots.getSlotFromInventory(te, te.slots.inIndividual2).setBackgroundIcon(HintIcons.droneOrPollen)
+        inventorySlots.getSlotFromInventory(te, te.slots.inLabware).setBackgroundIcon(HintIcons.labware)
+    }
 }

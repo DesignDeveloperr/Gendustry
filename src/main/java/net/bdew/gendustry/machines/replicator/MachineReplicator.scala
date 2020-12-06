@@ -15,17 +15,19 @@ import net.bdew.lib.machine.{Machine, ProcessorMachine}
 import net.minecraft.entity.player.EntityPlayer
 
 object MachineReplicator extends Machine("Replicator", BlockReplicator) with GuiProvider with ProcessorMachine {
-  def guiId = 10
-  type TEClass = TileReplicator
+    def guiId = 10
 
-  lazy val dnaTankSize = tuning.getInt("DNATankSize")
-  lazy val proteinTankSize = tuning.getInt("ProteinTankSize")
-  lazy val dnaPerItem = tuning.getInt("DNAPerItem")
-  lazy val proteinPerItem = tuning.getInt("ProteinPerItem")
+    type TEClass = TileReplicator
 
-  lazy val makePristineBees = tuning.getBoolean("MakePristineBees")
+    lazy val dnaTankSize = tuning.getInt("DNATankSize")
+    lazy val proteinTankSize = tuning.getInt("ProteinTankSize")
+    lazy val dnaPerItem = tuning.getInt("DNAPerItem")
+    lazy val proteinPerItem = tuning.getInt("ProteinPerItem")
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileReplicator, player: EntityPlayer) = new GuiReplicator(te, player)
-  def getContainer(te: TileReplicator, player: EntityPlayer) = new ContainerReplicator(te, player)
+    lazy val makePristineBees = tuning.getBoolean("MakePristineBees")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileReplicator, player: EntityPlayer) = new GuiReplicator(te, player)
+
+    def getContainer(te: TileReplicator, player: EntityPlayer) = new ContainerReplicator(te, player)
 }

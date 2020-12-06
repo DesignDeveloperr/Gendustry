@@ -16,11 +16,12 @@ import net.bdew.gendustry.api.registries.IMutatronOverrides
 import net.bdew.lib.Misc
 
 object MutatronOverridesImpl extends IMutatronOverrides {
-  var overrides = Map.empty[String, EnumMutationSetting]
+    var overrides = Map.empty[String, EnumMutationSetting]
 
-  override def set(species: IAlleleSpecies, setting: EnumMutationSetting): Unit = set(species.getUID, setting)
-  override def set(speciesUid: String, setting: EnumMutationSetting): Unit = {
-    Gendustry.logInfo("Registering mutatron override from %s: %s -> %s", Misc.getActiveModId, speciesUid, setting)
-    overrides += (speciesUid -> setting)
-  }
+    override def set(species: IAlleleSpecies, setting: EnumMutationSetting): Unit = set(species.getUID, setting)
+
+    override def set(speciesUid: String, setting: EnumMutationSetting): Unit = {
+        Gendustry.logInfo("Registering mutatron override from %s: %s -> %s", Misc.getActiveModId, speciesUid, setting)
+        overrides += (speciesUid -> setting)
+    }
 }

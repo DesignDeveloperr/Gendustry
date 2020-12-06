@@ -12,7 +12,9 @@ package net.bdew.gendustry.nei.helpers
 import net.bdew.lib.gui.{Point, Rect}
 
 abstract class RecipeComponent(val rect: Rect) {
-  def getTooltip: List[String]
-  def mouseClick(button: Int): Boolean
-  def render(offset: Point)
+    def getTooltip: List[String]
+
+    def mouseClick(button: Int): Boolean
+
+    def render(offset: Point)
 }

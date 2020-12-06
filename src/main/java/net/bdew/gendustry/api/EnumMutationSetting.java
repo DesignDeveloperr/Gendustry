@@ -13,5 +13,5 @@ package net.bdew.gendustry.api;
  * Used in mutatron overrides, see http://bdew.net/gendustry/configuration/genetics-configuration/
  */
 public enum EnumMutationSetting {
-    ENABLED, DISABLED, REQUIREMENTS;
+    ENABLED, DISABLED, REQUIREMENTS
 }

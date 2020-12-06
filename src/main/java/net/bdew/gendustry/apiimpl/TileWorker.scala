@@ -13,5 +13,5 @@ import net.bdew.gendustry.api.blocks.IWorkerMachine
 import net.bdew.lib.power.TileBaseProcessor
 
 trait TileWorker extends TileBaseProcessor with IWorkerMachine {
-  override def getProgress = progress
+    override def getProgress = progress
 }

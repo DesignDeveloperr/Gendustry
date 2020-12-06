@@ -27,60 +27,61 @@ import net.bdew.gendustry.machines.transposer.MachineTransposer
 import net.bdew.gendustry.misc.GeneticsCache
 
 class NEIGendustryConfig extends IConfigureNEI {
-  def getName: String = "Gendustry"
-  def getVersion: String = "GENDUSTRY_VER"
+    def getName: String = "Gendustry"
 
-  def addRecipeHandler(h: IUsageHandler with ICraftingHandler) {
-    API.registerRecipeHandler(h)
-    API.registerUsageHandler(h)
-  }
+    def getVersion: String = "GENDUSTRY_VER"
 
-  def loadConfig() {
-    if (Config.neiAddSamples)
-      GeneticsCache.geneSamples.foreach(x => API.addItemListEntry(GeneSample.newStack(x))) // TODO: is this right?
-
-    addRecipeHandler(new TemplateCraftingHandler)
-
-    if (MachineMutagenProducer.enabled && Config.neiAddMutagenProducerRecipes) {
-      addRecipeHandler(new MutagenProducerHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Mutagen Producer@MutagenProducer")
+    def addRecipeHandler(h: IUsageHandler with ICraftingHandler) {
+        API.registerRecipeHandler(h)
+        API.registerUsageHandler(h)
     }
 
-    if (MachineMutatron.enabled && Config.neiAddMutatronRecipes) {
-      addRecipeHandler(new MutatronHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Mutatron@Mutatron")
-    }
+    def loadConfig() {
+        if (Config.neiAddSamples)
+            GeneticsCache.geneSamples.foreach(x => API.addItemListEntry(GeneSample.newStack(x))) // TODO: is this right?
 
-    if (MachineSampler.enabled && Config.neiAddSamplerRecipes) {
-      addRecipeHandler(new SamplerHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Sampler@Sampler")
-    }
+        addRecipeHandler(new TemplateCraftingHandler)
 
-    if (MachineImprinter.enabled && Config.neiAddImprinterRecipes) {
-      addRecipeHandler(new ImprinterHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Imprinter@Imprinter")
-    }
+        if (MachineMutagenProducer.enabled && Config.neiAddMutagenProducerRecipes) {
+            addRecipeHandler(new MutagenProducerHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Mutagen Producer@MutagenProducer")
+        }
 
-    if (MachineExtractor.enabled && Config.neiAddExtractorRecipes) {
-      addRecipeHandler(new ExtractorHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Extractor@Extractor")
-    }
+        if (MachineMutatron.enabled && Config.neiAddMutatronRecipes) {
+            addRecipeHandler(new MutatronHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Mutatron@Mutatron")
+        }
 
-    if (MachineLiquifier.enabled && Config.neiAddLiquifierRecipes) {
-      addRecipeHandler(new LiquifierHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Liquifier@Liquifier")
-    }
+        if (MachineSampler.enabled && Config.neiAddSamplerRecipes) {
+            addRecipeHandler(new SamplerHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Sampler@Sampler")
+        }
 
-    if (MachineReplicator.enabled && Config.neiAddReplicatorRecipes) {
-      addRecipeHandler(new ReplicatorHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Replicator@Replicator")
-    }
+        if (MachineImprinter.enabled && Config.neiAddImprinterRecipes) {
+            addRecipeHandler(new ImprinterHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Imprinter@Imprinter")
+        }
 
-    if (MachineTransposer.enabled && Config.neiAddTransposerRecipes) {
-      addRecipeHandler(new TransposerHandler)
-      FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Transposer@Transposer")
-    }
+        if (MachineExtractor.enabled && Config.neiAddExtractorRecipes) {
+            addRecipeHandler(new ExtractorHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Extractor@Extractor")
+        }
 
-    GuiContainerManager.addTooltipHandler(new SmeltingTooltipHandler)
-  }
+        if (MachineLiquifier.enabled && Config.neiAddLiquifierRecipes) {
+            addRecipeHandler(new LiquifierHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Liquifier@Liquifier")
+        }
+
+        if (MachineReplicator.enabled && Config.neiAddReplicatorRecipes) {
+            addRecipeHandler(new ReplicatorHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Replicator@Replicator")
+        }
+
+        if (MachineTransposer.enabled && Config.neiAddTransposerRecipes) {
+            addRecipeHandler(new TransposerHandler)
+            FMLInterModComms.sendRuntimeMessage(Gendustry, "NEIPlugins", "register-crafting-handler", "Gendustry@Transposer@Transposer")
+        }
+
+        GuiContainerManager.addTooltipHandler(new SmeltingTooltipHandler)
+    }
 }

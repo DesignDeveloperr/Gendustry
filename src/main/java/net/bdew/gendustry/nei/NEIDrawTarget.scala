@@ -14,6 +14,7 @@ import net.bdew.lib.gui.SimpleDrawTarget
 import net.minecraft.client.Minecraft
 
 object NEIDrawTarget extends SimpleDrawTarget {
-  def getZLevel = GuiDraw.gui.getZLevel
-  def getFontRenderer = Minecraft.getMinecraft.fontRenderer
+    def getZLevel = GuiDraw.gui.getZLevel
+
+    def getFontRenderer = Minecraft.getMinecraft.fontRenderer
 }

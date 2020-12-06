@@ -19,19 +19,21 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.item.ItemStack
 
 class SmeltingTooltipHandler extends IContainerTooltipHandler {
-  override def handleItemDisplayName(gui: GuiContainer, stack: ItemStack, tip: util.List[String]) = tip
-  override def handleTooltip(gui: GuiContainer, mouseX: Int, mouseY: Int, tip: util.List[String]) = tip
-  override def handleItemTooltip(gui: GuiContainer, itemStack: ItemStack, mouseX: Int, mouseY: Int, tip: util.List[String]) = {
-    if (gui.isInstanceOf[GuiRecipe] && itemStack != null) {
-      val gr = gui.asInstanceOf[GuiRecipe]
-      val handler = gr.currenthandlers.get(gr.recipetype)
-      if (handler.isInstanceOf[FurnaceRecipeHandler]) {
-        if (itemStack.getItem == GeneSample)
-          tip.add(Misc.toLocal("gendustry.label.erase"))
-        if (itemStack.getItem == GeneTemplate)
-          tip.add(Misc.toLocal("gendustry.label.erase"))
-      }
+    override def handleItemDisplayName(gui: GuiContainer, stack: ItemStack, tip: util.List[String]) = tip
+
+    override def handleTooltip(gui: GuiContainer, mouseX: Int, mouseY: Int, tip: util.List[String]) = tip
+
+    override def handleItemTooltip(gui: GuiContainer, itemStack: ItemStack, mouseX: Int, mouseY: Int, tip: util.List[String]) = {
+        if (gui.isInstanceOf[GuiRecipe] && itemStack != null) {
+            val gr = gui.asInstanceOf[GuiRecipe]
+            val handler = gr.currenthandlers.get(gr.recipetype)
+            if (handler.isInstanceOf[FurnaceRecipeHandler]) {
+                if (itemStack.getItem == GeneSample)
+                    tip.add(Misc.toLocal("gendustry.label.erase"))
+                if (itemStack.getItem == GeneTemplate)
+                    tip.add(Misc.toLocal("gendustry.label.erase"))
+            }
+        }
+        tip
     }
-    tip
-  }
 }

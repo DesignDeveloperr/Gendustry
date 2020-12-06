@@ -25,51 +25,51 @@ import net.minecraft.util.IIcon
 import net.minecraft.world.{IBlockAccess, World}
 
 object BlockApiary extends Block(MachineMaterial) with HasTE[TileApiary] with BlockCoverable[TileApiary] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  private var icons: Array[IIcon] = null
-  val TEClass = classOf[TileApiary]
-  lazy val guiId: Int = MachineApiary.guiId
+    private var icons: Array[IIcon] = null
+    val TEClass = classOf[TileApiary]
+    lazy val guiId: Int = MachineApiary.guiId
 
-  setBlockName(Gendustry.modId + ".apiary")
-  setHardness(2)
+    setBlockName(Gendustry.modId + ".apiary")
+    setHardness(2)
 
-  override def getIcon(side: Int, meta: Int): IIcon = if (side < 2) icons(0) else icons(1)
+    override def getIcon(side: Int, meta: Int): IIcon = if (side < 2) icons(0) else icons(1)
 
-  @SideOnly(Side.CLIENT)
-  override def registerBlockIcons(reg: IIconRegister) {
-    icons = new Array[IIcon](2)
-    icons(0) = reg.registerIcon(Misc.iconName(Gendustry.modId, "apiary", "top"))
-    icons(1) = reg.registerIcon(Misc.iconName(Gendustry.modId, "apiary", "side"))
-  }
+    @SideOnly(Side.CLIENT)
+    override def registerBlockIcons(reg: IIconRegister) {
+        icons = new Array[IIcon](2)
+        icons(0) = reg.registerIcon(Misc.iconName(Gendustry.modId, "apiary", "top"))
+        icons(1) = reg.registerIcon(Misc.iconName(Gendustry.modId, "apiary", "side"))
+    }
 
-  override def getLightValue(world: IBlockAccess, x: Int, y: Int, z: Int): Int = {
-    val block = world.getBlock(x, y, z)
-    if (block != null && block != this)
-      return block.getLightValue(world, x, y, z)
-    else if (world.getTileEntity(x, y, z) != null && getTE(world, x, y, z).hasLight)
-      return 15
-    else
-      return 0
-  }
+    override def getLightValue(world: IBlockAccess, x: Int, y: Int, z: Int): Int = {
+        val block = world.getBlock(x, y, z)
+        if (block != null && block != this)
+            return block.getLightValue(world, x, y, z)
+        else if (world.getTileEntity(x, y, z) != null && getTE(world, x, y, z).hasLight)
+            return 15
+        else
+            return 0
+    }
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      val inv = BlockTooltipHelper.getInventory(data)
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            val inv = BlockTooltipHelper.getInventory(data)
 
-      List.empty ++
-        (inv.get(0) map (_.getDisplayName)) ++
-        (inv.get(1) map (_.getDisplayName)) ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getItemsTooltip(data)
+            List.empty ++
+                    (inv.get(0) map (_.getDisplayName)) ++
+                    (inv.get(1) map (_.getDisplayName)) ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
 
-    } else List.empty
-  }
+        } else List.empty
+    }
 
-  override def restoreTileEntity(world: World, x: Int, y: Int, z: Int, is: ItemStack, player: EntityPlayer): Unit = {
-    super.restoreTileEntity(world, x, y, z, is, player)
-    if (player.isInstanceOf[EntityPlayerMP])
-      getTE(world, x, y, z).owner := player.asInstanceOf[EntityPlayerMP].getGameProfile
-  }
+    override def restoreTileEntity(world: World, x: Int, y: Int, z: Int, is: ItemStack, player: EntityPlayer): Unit = {
+        super.restoreTileEntity(world, x, y, z, is, player)
+        if (player.isInstanceOf[EntityPlayerMP])
+            getTE(world, x, y, z).owner := player.asInstanceOf[EntityPlayerMP].getGameProfile
+    }
 
-  override def canConnectRedstone(world: IBlockAccess, x: Int, y: Int, z: Int, side: Int) = true
+    override def canConnectRedstone(world: IBlockAccess, x: Int, y: Int, z: Int, side: Int) = true
 }

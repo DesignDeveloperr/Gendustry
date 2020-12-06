@@ -15,23 +15,23 @@ import net.minecraftforge.oredict.OreDictionary
 import scala.collection.mutable
 
 class FluidSourceRegistry {
-  val values = mutable.Map.empty[Item, mutable.Map[Int, Int]]
+    val values = mutable.Map.empty[Item, mutable.Map[Int, Int]]
 
-  def register(stack: ItemStack, value: Int): Unit = register(stack.getItem, stack.getItemDamage, value)
+    def register(stack: ItemStack, value: Int): Unit = register(stack.getItem, stack.getItemDamage, value)
 
-  def register(item: Item, damage: Int, value: Int) =
-    values.getOrElseUpdate(item, mutable.Map.empty) += (damage -> value)
+    def register(item: Item, damage: Int, value: Int) =
+        values.getOrElseUpdate(item, mutable.Map.empty) += (damage -> value)
 
-  def getValue(item: ItemStack): Int = {
-    val sub = values.getOrElse(item.getItem, return 0)
-    if (sub.contains(item.getItemDamage)) {
-      return sub(item.getItemDamage)
-    } else if (sub.contains(OreDictionary.WILDCARD_VALUE)) {
-      return sub(OreDictionary.WILDCARD_VALUE)
-    } else {
-      return 0
+    def getValue(item: ItemStack): Int = {
+        val sub = values.getOrElse(item.getItem, return 0)
+        if (sub.contains(item.getItemDamage)) {
+            return sub(item.getItemDamage)
+        } else if (sub.contains(OreDictionary.WILDCARD_VALUE)) {
+            return sub(OreDictionary.WILDCARD_VALUE)
+        } else {
+            return 0
+        }
     }
-  }
 }
 
 object MutagenSources extends FluidSourceRegistry

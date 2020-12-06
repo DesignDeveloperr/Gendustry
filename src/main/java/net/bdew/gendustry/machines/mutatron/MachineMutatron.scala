@@ -22,31 +22,33 @@ import net.bdew.lib.recipes.gencfg.EntryStr
 import net.minecraft.entity.player.EntityPlayer
 
 object MachineMutatron extends Machine("Mutatron", BlockMutatron) with GuiProvider with ProcessorMachine {
-  def guiId = 2
-  type TEClass = TileMutatron
+    def guiId = 2
 
-  lazy val tankSize = tuning.getInt("TankSize")
-  lazy val mutagenPerItem = tuning.getInt("MutagenPerItem")
-  lazy val labwareConsumeChance = tuning.getFloat("LabwareConsumeChance")
-  lazy val degradeChanceNatural = tuning.getFloat("DegradeChanceNatural")
-  lazy val deathChanceArtificial = tuning.getFloat("DeathChanceArtificial")
-  lazy val secretChance = tuning.getFloat("SecretMutationChance")
+    type TEClass = TileMutatron
 
-  lazy val mutatronOverrides =
-    (
-      MutatronOverridesImpl.overrides ++
-        (for ((key, value) <- Tuning.getSection("Genetics").getSection("MutatronOverrides").filterType(classOf[EntryStr]))
-          yield value.v.toUpperCase(Locale.US) match {
-            case "ENABLED" => Some(key -> EnumMutationSetting.ENABLED)
-            case "DISABLED" => Some(key -> EnumMutationSetting.DISABLED)
-            case "REQUIREMENTS" => Some(key -> EnumMutationSetting.REQUIREMENTS)
-            case _ =>
-              Gendustry.logWarn("Ignoring mutatron override for species %s - invalid value (%s)", key, value.v)
-              None
-          }).flatten.toMap
-      ).withDefaultValue(EnumMutationSetting.ENABLED)
+    lazy val tankSize = tuning.getInt("TankSize")
+    lazy val mutagenPerItem = tuning.getInt("MutagenPerItem")
+    lazy val labwareConsumeChance = tuning.getFloat("LabwareConsumeChance")
+    lazy val degradeChanceNatural = tuning.getFloat("DegradeChanceNatural")
+    lazy val deathChanceArtificial = tuning.getFloat("DeathChanceArtificial")
+    lazy val secretChance = tuning.getFloat("SecretMutationChance")
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileMutatron, player: EntityPlayer) = new GuiMutatron(te, player)
-  def getContainer(te: TileMutatron, player: EntityPlayer) = new ContainerMutatron(te, player)
+    lazy val mutatronOverrides =
+        (
+                MutatronOverridesImpl.overrides ++
+                        (for ((key, value) <- Tuning.getSection("Genetics").getSection("MutatronOverrides").filterType(classOf[EntryStr]))
+                            yield value.v.toUpperCase(Locale.US) match {
+                                case "ENABLED" => Some(key -> EnumMutationSetting.ENABLED)
+                                case "DISABLED" => Some(key -> EnumMutationSetting.DISABLED)
+                                case "REQUIREMENTS" => Some(key -> EnumMutationSetting.REQUIREMENTS)
+                                case _ =>
+                                    Gendustry.logWarn("Ignoring mutatron override for species %s - invalid value (%s)", key, value.v)
+                                    None
+                            }).flatten.toMap
+                ).withDefaultValue(EnumMutationSetting.ENABLED)
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileMutatron, player: EntityPlayer) = new GuiMutatron(te, player)
+
+    def getContainer(te: TileMutatron, player: EntityPlayer) = new ContainerMutatron(te, player)
 }

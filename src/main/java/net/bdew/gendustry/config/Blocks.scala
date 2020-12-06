@@ -14,5 +14,5 @@ import net.bdew.gendustry.misc.GendustryCreativeTabs
 import net.bdew.lib.config.BlockManager
 
 object Blocks extends BlockManager(GendustryCreativeTabs.main) {
-  Gendustry.logInfo("Blocks loaded")
+    Gendustry.logInfo("Blocks loaded")
 }

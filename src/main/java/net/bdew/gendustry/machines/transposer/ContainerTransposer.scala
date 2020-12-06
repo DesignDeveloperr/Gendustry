@@ -14,11 +14,11 @@ import net.bdew.lib.gui.{BaseContainer, SlotValidating}
 import net.minecraft.entity.player.EntityPlayer
 
 class ContainerTransposer(val te: TileTransposer, player: EntityPlayer) extends BaseContainer(te) with ContainerDataSlots {
-  lazy val dataSource = te
+    lazy val dataSource = te
 
-  addSlotToContainer(new SlotValidating(te, te.slots.inTemplate, 74, 28))
-  addSlotToContainer(new SlotValidating(te, te.slots.inLabware, 98, 28))
-  addSlotToContainer(new SlotValidating(te, te.slots.inBlank, 41, 49))
-  addSlotToContainer(new SlotValidating(te, te.slots.outCopy, 137, 49))
-  bindPlayerInventory(player.inventory, 8, 84, 142)
+    addSlotToContainer(new SlotValidating(te, te.slots.inTemplate, 74, 28))
+    addSlotToContainer(new SlotValidating(te, te.slots.inLabware, 98, 28))
+    addSlotToContainer(new SlotValidating(te, te.slots.inBlank, 41, 49))
+    addSlotToContainer(new SlotValidating(te, te.slots.outCopy, 137, 49))
+    bindPlayerInventory(player.inventory, 8, 84, 142)
 }

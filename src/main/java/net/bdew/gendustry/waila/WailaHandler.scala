@@ -15,14 +15,14 @@ import net.bdew.gendustry.machines.apiary.TileApiary
 import net.bdew.gendustry.power.TilePowered
 
 object WailaHandler {
-  def loadCallback(reg: IWailaRegistrar) {
-    Gendustry.logInfo("WAILA callback received, loading...")
+    def loadCallback(reg: IWailaRegistrar) {
+        Gendustry.logInfo("WAILA callback received, loading...")
 
-    reg.registerBodyProvider(WailaDataSlotsDataProvider, classOf[TilePowered])
-    reg.registerBodyProvider(WailaApiaryDataProvider, classOf[TileApiary])
+        reg.registerBodyProvider(WailaDataSlotsDataProvider, classOf[TilePowered])
+        reg.registerBodyProvider(WailaApiaryDataProvider, classOf[TileApiary])
 
-    reg.registerNBTProvider(WailaDataSlotsDataProvider, classOf[TilePowered])
-    reg.registerNBTProvider(WailaApiaryDataProvider, classOf[TileApiary])
+        reg.registerNBTProvider(WailaDataSlotsDataProvider, classOf[TilePowered])
+        reg.registerNBTProvider(WailaApiaryDataProvider, classOf[TileApiary])
 
-  }
+    }
 }

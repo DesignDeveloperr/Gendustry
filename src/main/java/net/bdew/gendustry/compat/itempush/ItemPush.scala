@@ -15,24 +15,24 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.ForgeDirection
 
 object ItemPush {
-  var proxies = List.empty[ItemPushProxy]
+    var proxies = List.empty[ItemPushProxy]
 
-  def init() {
-    register(VanillaPush)
-    if (Misc.haveModVersion("BuildCraftAPI|transport@[3.0,)")) register(BCPipePushProxy)
-    if (Misc.haveModVersion("CoFHAPI|transport")) register(CofhConduitPushProxy)
-    if (Misc.haveModVersion("Mekanism")) register(MekanismPushProxy)
-  }
+    def init() {
+        register(VanillaPush)
+        if (Misc.haveModVersion("BuildCraftAPI|transport@[3.0,)")) register(BCPipePushProxy)
+        if (Misc.haveModVersion("CoFHAPI|transport")) register(CofhConduitPushProxy)
+        if (Misc.haveModVersion("Mekanism")) register(MekanismPushProxy)
+    }
 
-  def register(p: ItemPushProxy) = proxies :+= p
+    def register(p: ItemPushProxy) = proxies :+= p
 
-  def pushStack(from: TileEntity, dir: ForgeDirection, st: ItemStack) = {
-    var stack = st
-    for (proxy <- proxies if stack != null && stack.stackSize > 0)
-      stack = proxy.pushStack(from, dir, stack)
-    if (stack != null && stack.stackSize <= 0)
-      null
-    else
-      stack
-  }
+    def pushStack(from: TileEntity, dir: ForgeDirection, st: ItemStack) = {
+        var stack = st
+        for (proxy <- proxies if stack != null && stack.stackSize > 0)
+            stack = proxy.pushStack(from, dir, stack)
+        if (stack != null && stack.stackSize <= 0)
+            null
+        else
+            stack
+    }
 }

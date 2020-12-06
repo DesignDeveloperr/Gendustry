@@ -15,7 +15,7 @@ import net.bdew.lib.CreativeTabContainer
 import net.minecraft.item.Item
 
 object GendustryCreativeTabs extends CreativeTabContainer {
-  val main = new Tab("bdew.gendustry", Item.getItemFromBlock(BlockApiary))
-  val samples = new Tab("bdew.samples", GeneSample)
-  val templates = new Tab("bdew.templates", GeneTemplate)
+    val main = new Tab("bdew.gendustry", Item.getItemFromBlock(BlockApiary))
+    val samples = new Tab("bdew.samples", GeneSample)
+    val templates = new Tab("bdew.templates", GeneTemplate)
 }

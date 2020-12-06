@@ -18,13 +18,13 @@ import net.bdew.lib.gui.{Point, Rect, Texture}
 import scala.collection.mutable
 
 class WidgetProgressBarNEI(rect: Rect, texture: Texture, dSlot: DataSlotFloat, recipeId: String) extends WidgetProgressBar(rect, texture, dSlot) {
-  override def mouseClicked(p: Point, button: Int) {
-    if (NEIRecipeProxy.hasNei)
-      NEIRecipeProxy.openRecipes(recipeId)
-  }
+    override def mouseClicked(p: Point, button: Int) {
+        if (NEIRecipeProxy.hasNei)
+            NEIRecipeProxy.openRecipes(recipeId)
+    }
 
-  override def handleTooltip(p: Point, tip: mutable.MutableList[String]) {
-    super.handleTooltip(p, tip)
-    if (NEIRecipeProxy.hasNei) tip += Misc.toLocal("gendustry.label.recipes")
-  }
+    override def handleTooltip(p: Point, tip: mutable.MutableList[String]) {
+        super.handleTooltip(p, tip)
+        if (NEIRecipeProxy.hasNei) tip += Misc.toLocal("gendustry.label.recipes")
+    }
 }

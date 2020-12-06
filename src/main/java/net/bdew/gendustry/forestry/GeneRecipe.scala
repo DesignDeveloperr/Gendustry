@@ -16,26 +16,29 @@ import net.minecraft.item.crafting.IRecipe
 import net.minecraft.world.World
 
 class GeneRecipe extends IRecipe {
-  def matches(inv: InventoryCrafting, world: World): Boolean = getCraftingResult(inv) != null
-  def getCraftingResult(inv: InventoryCrafting): ItemStack = {
-    var template: ItemStack = null
-    var samples = Seq.empty[GeneSampleInfo]
-    for (i <- 0 until 3; j <- 0 until 3) {
-      val itm = inv.getStackInRowAndColumn(i, j)
-      if (itm != null && itm.getItem == GeneSample && itm.hasTagCompound)
-        samples :+= GeneSample.getInfo(itm)
-      else if (itm != null && itm.getItem == GeneTemplate && template == null)
-        template = itm
-      else if (itm != null)
-        return null
+    def matches(inv: InventoryCrafting, world: World): Boolean = getCraftingResult(inv) != null
+
+    def getCraftingResult(inv: InventoryCrafting): ItemStack = {
+        var template: ItemStack = null
+        var samples = Seq.empty[GeneSampleInfo]
+        for (i <- 0 until 3; j <- 0 until 3) {
+            val itm = inv.getStackInRowAndColumn(i, j)
+            if (itm != null && itm.getItem == GeneSample && itm.hasTagCompound)
+                samples :+= GeneSample.getInfo(itm)
+            else if (itm != null && itm.getItem == GeneTemplate && template == null)
+                template = itm
+            else if (itm != null)
+                return null
+        }
+        if (samples.isEmpty || template == null) return null
+        val out = template.copy()
+        for (s <- samples) {
+            if (!GeneTemplate.addSample(out, s)) return null
+        }
+        return out
     }
-    if (samples.isEmpty || template == null) return null
-    val out = template.copy()
-    for (s <- samples) {
-      if (!GeneTemplate.addSample(out, s)) return null
-    }
-    return out
-  }
-  def getRecipeSize: Int = 9
-  def getRecipeOutput: ItemStack = new ItemStack(GeneTemplate)
+
+    def getRecipeSize: Int = 9
+
+    def getRecipeOutput: ItemStack = new ItemStack(GeneTemplate)
 }

@@ -19,35 +19,35 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
 
 object WailaApiaryDataProvider extends BaseDataProvider(classOf[TileApiary]) {
-  override def getBodyStrings(target: TileApiary, stack: ItemStack, acc: IWailaDataAccessor, cfg: IWailaConfigHandler) = {
-    var strings = target.errorConditions.toList.sortBy(_.getID) map { err =>
-      EnumChatFormatting.RED + Misc.toLocal("for." + err.getDescription)
-    }
-    strings :+= Misc.toLocalF("gendustry.label.control", Misc.toLocal("gendustry.rsmode." + target.rsmode.value.toString.toLowerCase(Locale.US)))
-
-    if (target.queen :!= null)
-      strings :+= target.queen.getDisplayName
-
-    Option(target.covers(acc.getSide).value) foreach { cover =>
-      if (cover.getItem == ErrorSensorCover) {
-        ErrorSensorCover.getErrorSensor(cover) foreach { sensor =>
-          strings :+= "%s (%s%s%s)".format(
-            Misc.toLocalF("gendustry.cover.label", cover.getDisplayName),
-            EnumChatFormatting.YELLOW,
-            Misc.toLocal(sensor.getUnLocalizedName),
-            EnumChatFormatting.RESET
-          )
+    override def getBodyStrings(target: TileApiary, stack: ItemStack, acc: IWailaDataAccessor, cfg: IWailaConfigHandler) = {
+        var strings = target.errorConditions.toList.sortBy(_.getID) map { err =>
+            EnumChatFormatting.RED + Misc.toLocal("for." + err.getDescription)
         }
-      } else {
-        strings :+= Misc.toLocalF("gendustry.cover.label", cover.getDisplayName)
-      }
+        strings :+= Misc.toLocalF("gendustry.label.control", Misc.toLocal("gendustry.rsmode." + target.rsmode.value.toString.toLowerCase(Locale.US)))
+
+        if (target.queen :!= null)
+            strings :+= target.queen.getDisplayName
+
+        Option(target.covers(acc.getSide).value) foreach { cover =>
+            if (cover.getItem == ErrorSensorCover) {
+                ErrorSensorCover.getErrorSensor(cover) foreach { sensor =>
+                    strings :+= "%s (%s%s%s)".format(
+                        Misc.toLocalF("gendustry.cover.label", cover.getDisplayName),
+                        EnumChatFormatting.YELLOW,
+                        Misc.toLocal(sensor.getUnLocalizedName),
+                        EnumChatFormatting.RESET
+                    )
+                }
+            } else {
+                strings :+= Misc.toLocalF("gendustry.cover.label", cover.getDisplayName)
+            }
+        }
+
+        if (acc.getPlayer.isSneaking)
+            strings ++= target.getStats
+        else
+            strings :+= Misc.toLocal("gendustry.label.shift")
+
+        strings
     }
-
-    if (acc.getPlayer.isSneaking)
-      strings ++= target.getStats
-    else
-      strings :+= Misc.toLocal("gendustry.label.shift")
-
-    strings
-  }
 }

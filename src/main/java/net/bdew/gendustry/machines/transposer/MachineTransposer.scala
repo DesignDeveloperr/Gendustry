@@ -17,12 +17,14 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 
 object MachineTransposer extends Machine("Transposer", BlockTransposer) with GuiProvider with ProcessorMachine {
-  def guiId = 9
-  type TEClass = TileTransposer
+    def guiId = 9
 
-  lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+    type TEClass = TileTransposer
 
-  @SideOnly(Side.CLIENT)
-  def getGui(te: TileTransposer, player: EntityPlayer): GuiContainer = new GuiTransposer(te, player)
-  def getContainer(te: TileTransposer, player: EntityPlayer): Container = new ContainerTransposer(te, player)
+    lazy val labwareConsumeChance = tuning.getInt("LabwareConsumeChance")
+
+    @SideOnly(Side.CLIENT)
+    def getGui(te: TileTransposer, player: EntityPlayer): GuiContainer = new GuiTransposer(te, player)
+
+    def getContainer(te: TileTransposer, player: EntityPlayer): Container = new ContainerTransposer(te, player)
 }

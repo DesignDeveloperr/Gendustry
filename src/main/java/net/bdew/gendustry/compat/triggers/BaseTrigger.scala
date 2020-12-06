@@ -19,28 +19,32 @@ import net.minecraft.util.IIcon
 import net.minecraftforge.common.util.ForgeDirection
 
 abstract class BaseTrigger[T](val id: String, ordering: String, tileClass: Class[T]) extends ITriggerExternal {
-  var icon: IIcon = null
-  override def getUniqueTag = "gendustry." + ordering + "." + id
+    var icon: IIcon = null
 
-  @SideOnly(Side.CLIENT)
-  override def getIcon = icon
+    override def getUniqueTag = "gendustry." + ordering + "." + id
 
-  @SideOnly(Side.CLIENT)
-  override def registerIcons(ir: IIconRegister) =
-    icon = ir.registerIcon(Misc.iconName(Gendustry.modId, "trigger", id))
+    @SideOnly(Side.CLIENT)
+    override def getIcon = icon
 
-  override def getDescription = Misc.toLocal("gendustry.trigger." + id)
-  override def rotateLeft() = this
+    @SideOnly(Side.CLIENT)
+    override def registerIcons(ir: IIconRegister) =
+        icon = ir.registerIcon(Misc.iconName(Gendustry.modId, "trigger", id))
 
-  override def createParameter(index: Int) = null
-  override def maxParameters() = 0
-  override def minParameters() = 0
+    override def getDescription = Misc.toLocal("gendustry.trigger." + id)
 
-  override def isTriggerActive(target: TileEntity, side: ForgeDirection, source: IStatementContainer, parameters: Array[IStatementParameter]) =
-    if (tileClass.isInstance(target))
-      getState(side, target.asInstanceOf[T])
-    else
-      false
+    override def rotateLeft() = this
 
-  def getState(side: ForgeDirection, tile: T): Boolean
+    override def createParameter(index: Int) = null
+
+    override def maxParameters() = 0
+
+    override def minParameters() = 0
+
+    override def isTriggerActive(target: TileEntity, side: ForgeDirection, source: IStatementContainer, parameters: Array[IStatementParameter]) =
+        if (tileClass.isInstance(target))
+            getState(side, target.asInstanceOf[T])
+        else
+            false
+
+    def getState(side: ForgeDirection, tile: T): Boolean
 }

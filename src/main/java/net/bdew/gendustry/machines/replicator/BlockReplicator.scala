@@ -18,17 +18,17 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 object BlockReplicator extends BaseMachineBlock("replicator") with HasTE[TileReplicator] with BlockCoverable[TileReplicator] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
-  val TEClass = classOf[TileReplicator]
-  lazy val guiId: Int = MachineReplicator.guiId
+    val TEClass = classOf[TileReplicator]
+    lazy val guiId: Int = MachineReplicator.guiId
 
-  override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
-    if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
-      val data = stack.getTagCompound.getCompoundTag("data")
-      List.empty ++
-        BlockTooltipHelper.getPowerTooltip(data, "power") ++
-        BlockTooltipHelper.getTankTooltip(data, "dnaTank") ++
-        BlockTooltipHelper.getTankTooltip(data, "proteinTank") ++
-        BlockTooltipHelper.getItemsTooltip(data)
-    } else List.empty
-  }
+    override def getTooltip(stack: ItemStack, player: EntityPlayer, advanced: Boolean): List[String] = {
+        if (stack.hasTagCompound && stack.getTagCompound.hasKey("data")) {
+            val data = stack.getTagCompound.getCompoundTag("data")
+            List.empty ++
+                    BlockTooltipHelper.getPowerTooltip(data, "power") ++
+                    BlockTooltipHelper.getTankTooltip(data, "dnaTank") ++
+                    BlockTooltipHelper.getTankTooltip(data, "proteinTank") ++
+                    BlockTooltipHelper.getItemsTooltip(data)
+        } else List.empty
+    }
 }

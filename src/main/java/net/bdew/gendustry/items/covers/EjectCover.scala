@@ -22,33 +22,33 @@ import net.minecraft.util.IIcon
 import net.minecraftforge.common.util.ForgeDirection
 
 object EjectCover extends SimpleItem("EjectCover") with ItemCover {
-  override def isCoverTicking: Boolean = true
+    override def isCoverTicking: Boolean = true
 
-  override def getCoverIcon(te: TileCoverable, side: ForgeDirection, cover: ItemStack): IIcon = itemIcon
+    override def getCoverIcon(te: TileCoverable, side: ForgeDirection, cover: ItemStack): IIcon = itemIcon
 
-  override def getSpriteNumber = 0
+    override def getSpriteNumber = 0
 
-  override def isValidTile(te: TileCoverable, stack: ItemStack) = te.isInstanceOf[ISidedInventory with IInventory]
+    override def isValidTile(te: TileCoverable, stack: ItemStack) = te.isInstanceOf[ISidedInventory with IInventory]
 
-  override def tickCover(te: TileCoverable, side: ForgeDirection, coverStack: ItemStack): Unit = {
-    if (te.getWorldObj.getTotalWorldTime % 20 != 0) return
-    val inv = te.asInstanceOf[ISidedInventory with IInventory]
+    override def tickCover(te: TileCoverable, side: ForgeDirection, coverStack: ItemStack): Unit = {
+        if (te.getWorldObj.getTotalWorldTime % 20 != 0) return
+        val inv = te.asInstanceOf[ISidedInventory with IInventory]
 
-    for {
-      slot <- inv.getAccessibleSlotsFromSide(side.ordinal())
-      stack <- Option(inv.getStackInSlot(slot))
-      if inv.canExtractItem(slot, stack, side.ordinal())
-    } {
-      val stackLeft = ItemPush.pushStack(te, side, stack.copy())
-      if (stackLeft == null || stackLeft.stackSize < stack.stackSize) {
-        inv.setInventorySlotContents(slot, stackLeft)
-        inv.markDirty()
-      }
+        for {
+            slot <- inv.getAccessibleSlotsFromSide(side.ordinal())
+            stack <- Option(inv.getStackInSlot(slot))
+            if inv.canExtractItem(slot, stack, side.ordinal())
+        } {
+            val stackLeft = ItemPush.pushStack(te, side, stack.copy())
+            if (stackLeft == null || stackLeft.stackSize < stack.stackSize) {
+                inv.setInventorySlotContents(slot, stackLeft)
+                inv.markDirty()
+            }
+        }
     }
-  }
 
-  @SideOnly(Side.CLIENT)
-  override def registerIcons(reg: IIconRegister) {
-    itemIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, "covers", "eject"))
-  }
+    @SideOnly(Side.CLIENT)
+    override def registerIcons(reg: IIconRegister) {
+        itemIcon = reg.registerIcon(Misc.iconName(Gendustry.modId, "covers", "eject"))
+    }
 }

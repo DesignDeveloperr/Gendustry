@@ -8,6 +8,6 @@
  */
 
 @API(apiVersion = "GENDUSTRY_APIVER", owner = "gendustry", provides = "gendustryAPI") //
-        package net.bdew.gendustry.api;
+package net.bdew.gendustry.api;
 
 import cpw.mods.fml.common.API;
