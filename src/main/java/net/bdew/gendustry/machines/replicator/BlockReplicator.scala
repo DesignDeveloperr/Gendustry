@@ -16,6 +16,7 @@ import net.bdew.lib.block.{BlockKeepData, BlockTooltip, HasTE}
 import net.bdew.lib.covers.BlockCoverable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.world.World
 
 object BlockReplicator extends BaseMachineBlock("replicator") with HasTE[TileReplicator] with BlockCoverable[TileReplicator] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
     val TEClass = classOf[TileReplicator]
@@ -30,5 +31,9 @@ object BlockReplicator extends BaseMachineBlock("replicator") with HasTE[TileRep
                     BlockTooltipHelper.getTankTooltip(data, "proteinTank") ++
                     BlockTooltipHelper.getItemsTooltip(data)
         } else List.empty
+    }
+
+    override def getSavedBlock(world: World, x: Int, y: Int, z: Int, metadata: Int): ItemStack = {
+        new ItemStack(getItemDropped(metadata, world.rand, 0), 1, damageDropped(metadata))
     }
 }

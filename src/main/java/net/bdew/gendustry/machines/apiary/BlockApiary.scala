@@ -72,4 +72,8 @@ object BlockApiary extends Block(MachineMaterial) with HasTE[TileApiary] with Bl
     }
 
     override def canConnectRedstone(world: IBlockAccess, x: Int, y: Int, z: Int, side: Int) = true
+
+    override def getSavedBlock(world: World, x: Int, y: Int, z: Int, metadata: Int): ItemStack = {
+        new ItemStack(getItemDropped(metadata, world.rand, 0), 1, damageDropped(metadata))
+    }
 }

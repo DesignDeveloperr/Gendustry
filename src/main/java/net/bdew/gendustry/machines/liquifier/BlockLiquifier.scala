@@ -16,6 +16,7 @@ import net.bdew.lib.block.{BlockKeepData, BlockTooltip, HasTE}
 import net.bdew.lib.covers.BlockCoverable
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.world.World
 
 object BlockLiquifier extends BaseMachineBlock("liquifier") with HasTE[TileLiquifier] with BlockCoverable[TileLiquifier] with BlockGuiWrenchable with BlockTooltip with BlockKeepData {
     val TEClass = classOf[TileLiquifier]
@@ -29,5 +30,9 @@ object BlockLiquifier extends BaseMachineBlock("liquifier") with HasTE[TileLiqui
                     BlockTooltipHelper.getTankTooltip(data, "tank") ++
                     BlockTooltipHelper.getItemsTooltip(data)
         } else List.empty
+    }
+
+    override def getSavedBlock(world: World, x: Int, y: Int, z: Int, metadata: Int): ItemStack = {
+        new ItemStack(getItemDropped(metadata, world.rand, 0), 1, damageDropped(metadata))
     }
 }
